@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title justify-content: start>
+       {{ todoName }}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+
+  <ion-list>
+    <ion-item-sliding *ngFor="let item of todoItems">
+
+    <ion-item>
+      <ion-label>
+        {{ item.name }} <p>{{ item.desc }}</p>
+      </ion-label>
+
+      <ion-checkbox [(ngModel)]="item.complete"></ion-checkbox>
+      <button (click)="editItem(item)" ion-button clear item-end>
+        <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
+      </button>
+
+    </ion-item>
+
+    <ion-item-options side="right">
+   <button ion-button expandable (click)="deleteItem(item)">Delete</button>
+    </ion-item-options>
+
+  </ion-item-sliding>
+  </ion-list>
+
+  <button ion-fab (click)="addItem()" style="position: fixed; margin-left:78%;margin-top: 50%; " > <ion-icon name="add"></ion-icon> </button>
+
+  <button ion-fab (click)="this.navCtrl.pop();" style="position: fixed; margin-top: 50%; " > <i class="fa fa-arrow-left fa-2x"  aria-hidden="true"></i> </button>
+
+</ion-content>

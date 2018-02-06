@@ -1,0 +1,35 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Auth</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <h2 *ngIf="isAuthenticated()" text-center>User is logged in!</h2>
+  <h2 *ngIf="!isAuthenticated()" text-center>User is not logged in!</h2>
+
+  <ion-list>
+  <ion-item>
+     <ion-label color="primary" stacked>Enter your email</ion-label>
+     <ion-input type="email" [(ngModel)]="login" placeholder="Email"></ion-input>
+   </ion-item>
+
+   <ion-item>
+     <ion-label color="primary" stacked>Enter your password</ion-label>
+     <ion-input type="password" [(ngModel)]="password" placeholder="Password"></ion-input>
+   </ion-item>
+ </ion-list>
+
+<button full ion-button color="secondary" (click)="loginUser(login,password)" class="pull-right">Login</button>
+
+<br><br>
+
+
+<button  full ion-button color="#d34836" (click)="loginGoogle()">Log with google</button>
+
+
+
+</ion-content>
