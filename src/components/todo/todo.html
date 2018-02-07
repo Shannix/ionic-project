@@ -1,19 +1,24 @@
 <ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let todo of todosList">
 
-    <br> <button ion-fab (click)="addTodo()" style="position: fixed; margin-left:80%;margin-top: 500px; " > <ion-icon name="add"></ion-icon> </button>  <br>
-
- <ion-list>
-    <ion-item-sliding *ngFor="let todo of todosList" >
-
-  <ion-item (ionSwipe)="deleteTodoList(todo)" [ngClass]="{completed: todoIsCompleted(todo)}" ion-item (click)="presentTodoModal(todo)" >
-      <h2>{{ todo.name }}</h2>
-      <p> ( {{ todo.items.length }} items )</p>
-
-  </ion-item>
+      <ion-item (ionSwipe)="deleteTodoList(todo)" [ngClass]="{completed: todoIsCompleted(todo)}" ion-item (click)="presentTodoModal(todo)">
+        <h2>{{ todo.name }}</h2>
+        <p> ( {{ todo.items.length }} items )</p>
+      </ion-item>
 
       <ion-item-options side="right"> <button ion-button expandable (click)="deleteTodoList(todo)"> Delete </button> </ion-item-options>
 
-</ion-item-sliding>
+    </ion-item-sliding>
   </ion-list>
 
+
 </ion-content>
+
+<ion-footer>
+  <ion-fab bottom right>
+    <button ion-fab (click)="addTodo()">
+    <ion-icon name="add"></ion-icon>
+  </button>
+  </ion-fab>
+</ion-footer>
