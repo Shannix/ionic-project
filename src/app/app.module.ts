@@ -16,6 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 import { TodoServiceProvider } from '../providers/todo-service/todo-service';
 
@@ -43,6 +44,7 @@ const firebaseConfig = {
     BrowserModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
+    AngularFireDatabaseModule,
     HttpClientModule,
     IonicModule.forRoot(MyApp),
   ],

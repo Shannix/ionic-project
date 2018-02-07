@@ -6,6 +6,7 @@ import { AuthServiceProvider } from '../../providers/auth-service/auth-service'
 import * as firebase from 'firebase/app';
 
 
+
 @IonicPage()
 @Component({
   selector: 'page-auth',
@@ -22,7 +23,7 @@ export class AuthPage {
 
   loginGoogle() {
     const result = this.AuthFire.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-    if (result) {
+    if (this.AuthFire.authState) {
       this.authService.login();
       this.navCtrl.setRoot(HomePage);
     }

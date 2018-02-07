@@ -3,7 +3,7 @@ import { TodoServiceProvider } from '../../providers/todo-service/todo-service'
 import { TodoList } from '../../models/model'
 import { ModalController, AlertController } from 'ionic-angular';
 import { SublistPage } from '../../pages/sublist/sublist';
-
+import { AngularFireDatabase } from 'angularfire2/database';
 /**
  * Generated class for the TodoComponent component.
  *
@@ -17,13 +17,18 @@ import { SublistPage } from '../../pages/sublist/sublist';
 export class TodoComponent {
 
   private todosList: TodoList[];
+  arrayData = [];
 
   constructor(
     public modalCtrl: ModalController,
     public todoServiceProvider: TodoServiceProvider,
     public alertCtrl: AlertController,
-    public service: TodoServiceProvider
-  ) { }
+    public service: TodoServiceProvider,
+    public DB: AngularFireDatabase
+  ) {
+    //this.DB.list('/data/').subscribe(data => { this.arrayData = data; });
+    //alert(this.arrayData);
+  }
 
   ngOnInit() {
     this.todoServiceProvider.getList().subscribe(res => {

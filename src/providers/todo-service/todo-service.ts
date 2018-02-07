@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TodoItem, TodoList } from "../../models/model";
 import { Observable } from "rxjs/Observable";
+import { AngularFireDatabase } from 'angularfire2/database';
 import 'rxjs/Rx';
 
 /*
@@ -50,7 +51,12 @@ export class TodoServiceProvider {
   ];
 
 
-  constructor(public http: HttpClient) { }
+  constructor(public DB: AngularFireDatabase) { }
+
+  public getList2() {
+    return this.DB.list('/data/');
+  }
+
 
   private getUuid(name: string) {
     return name;
