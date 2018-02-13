@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { TodoItem, TodoList } from "../../models/model";
 import { Observable } from "rxjs/Observable";
 import { AngularFireDatabase } from 'angularfire2/database';
+import { FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
 import 'rxjs/Rx';
-
 /*
   Generated class for the TodoServiceProvider provider.
 
@@ -14,94 +14,41 @@ import 'rxjs/Rx';
 @Injectable()
 export class TodoServiceProvider {
 
-  data: TodoList[] = [
-    {
-      uuid: "a351e558-29ce-4689-943c-c3e97be0df8b",
-      name: "List 13",
-      items: [
-        {
-
-          uuid: "7dc94eb4-d4e9-441b-b06b-0ca29738c8d2",
-          name: "Item 1-1",
-          complete: false
-        },
-        {
-          uuid: "20c09bdd-1cf8-43b0-9111-977fc4d343bc",
-          name: "Item 1-2",
-          complete: false
-        }
-      ]
-    },
-    {
-      uuid: "90c04913-c1a2-47e5-9535-c7a430cdcf9c",
-      name: "List 2",
-      items: [
-        {
-          uuid: "72849f5f-2ef6-444b-98b0-b50fc019f97c",
-          name: "Item 2-1",
-          complete: false
-        },
-        {
-          uuid: "20c09bdd-1cf8-43b0-9111-977fc4d343bc",
-          name: "Item 1-2",
-          complete: false
-        }
-      ]
-    }
-  ];
-
+  private basePath: string = '/TodoList/';
+  private todosList: FirebaseObjectObservable<TodoList>;
+  private todoObject: FirebaseListObservable<TodoList>;
 
   constructor(public DB: AngularFireDatabase) { }
 
-  public getList2() {
-    return this.DB.list('/data/');
-  }
-
-
-  private getUuid(name: string) {
-    return name;
-  }
-
   public getList(): Observable<TodoList[]> {
-    return Observable.of(this.data);
-  }
-
-  public getTodos(uuid: String): Observable<TodoItem[]> {
-    return Observable.of(this.data.find(d => d.uuid == uuid).items)
-  }
-
-  public addTodo(listUuid: String, newItem: TodoItem) {
-    newItem.uuid = this.getUuid(newItem.name)
-
-    let items = this.data.find(d => d.uuid == listUuid).items;
-    items.push(newItem);
-  }
-
-  public editTodo(listUuid: String, editedItem: TodoItem) {
-    let items = this.data.find(d => d.uuid == listUuid).items;
-    let index = items.findIndex(value => value.uuid == editedItem.uuid);
-    items[index] = editedItem;
-  }
-
-  public deleteTodo(listUuid: String, uuid: String) {
-    let items = this.data.find(d => d.uuid == listUuid).items;
-    let index = items.findIndex(value => value.uuid == uuid);
-    if (index != -1) {
-      items.splice(index, 1);
-    }
-  }
-
-  public deleteTodoList(uuid: String) {
-    const index = this.data.findIndex(d => d.uuid == uuid);
-    if (index != -1) {
-      this.data.splice(index, 1);
-    }
+    return this.DB.list(this.basePath, ref => ref.orderByChild('name')).snapshotChanges().map(changes => {
+      return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
+    });
   }
 
   public addTodoList(newTodoList: TodoList) {
-    newTodoList.uuid = this.getUuid(newTodoList.name)
-    this.data.push(newTodoList);
+    return this.DB.list(this.basePath).push(newTodoList);
   }
 
+  public UpdateTodoList(id: string, upTodo: TodoList) {
+    return this.DB.list(this.basePath).update(id, upTodo);
+  }
+
+  public deleteTodoList(id: string) {
+    const promise = this.DB.list(this.basePath).remove(id);
+    promise.then(_ => console.log('success'))
+      .catch(err => console.log(err, 'You do not have access!'));
+  }
+
+  public getTodos(name: string) {
+    let item = this.getList().find(d => d.name === 'a1');
+    return item.items;
+  }
+
+  public deleteEverything() {
+    const promise = this.DB.list(this.basePath).remove();
+    promise.then(_ => console.log('success'))
+      .catch(err => console.log(err, 'You do not have access!'));
+  }
 
 }

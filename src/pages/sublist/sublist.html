@@ -8,37 +8,28 @@
     </ion-title>
   </ion-navbar>
 </ion-header>
-
 <ion-content padding>
-
-
   <ion-list>
-    <ion-item-sliding *ngFor="let item of todoItems">
+    <ion-item-sliding *ngFor="let item of todoItems; let i= index;">
 
       <ion-item>
         <ion-label>
           {{ item.name }}
           <p>{{ item.desc }}</p>
         </ion-label>
-
         <ion-checkbox [(ngModel)]="item.complete"></ion-checkbox>
-        <button (click)="editItem(item)" ion-button clear item-end>
+        <button (click)="editItem(item,i)" ion-button clear item-end>
         <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
       </button>
-
       </ion-item>
-
       <ion-item-options side="right">
-        <button ion-button expandable (click)="deleteItem(item)">Delete</button>
+        <button ion-button expandable (click)="deleteItem(i)">Delete</button>
       </ion-item-options>
-
     </ion-item-sliding>
   </ion-list>
 </ion-content>
 <ion-footer>
-
   <ion-fab bottom right>
     <button ion-fab (click)="addItem()"> <ion-icon name="add"></ion-icon> </button>
   </ion-fab>
-
 </ion-footer>

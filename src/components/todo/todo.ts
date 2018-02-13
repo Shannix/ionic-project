@@ -4,6 +4,7 @@ import { TodoList } from '../../models/model'
 import { ModalController, AlertController } from 'ionic-angular';
 import { SublistPage } from '../../pages/sublist/sublist';
 import { AngularFireDatabase } from 'angularfire2/database';
+import { FirebaseObjectObservable } from 'angularfire2';
 /**
  * Generated class for the TodoComponent component.
  *
@@ -15,27 +16,25 @@ import { AngularFireDatabase } from 'angularfire2/database';
   templateUrl: 'todo.html'
 })
 export class TodoComponent {
-
-  private todosList: TodoList[];
-  arrayData = [];
+  //  private todosList: FirebaseListObservable<TodoList[]>;
+  private todosList: FirebaseObjectObservable<TodoList>;
 
   constructor(
     public modalCtrl: ModalController,
     public todoServiceProvider: TodoServiceProvider,
     public alertCtrl: AlertController,
-    public service: TodoServiceProvider,
-    public DB: AngularFireDatabase
-  ) {
-    //this.DB.list('/data/').subscribe(data => { this.arrayData = data; });
-    //alert(this.arrayData);
-  }
+    public service: TodoServiceProvider
+  ) { }
 
   ngOnInit() {
-    this.todoServiceProvider.getList().subscribe(res => {
-      this.todosList = res;
+    this.service.getList().subscribe(list => {
+      this.todosList = list;
     });
   }
 
+  delete(i: string) {
+    this.service.deleteTodoList(i);
+  }
 
   initTodo(name: string) {
     const todo: TodoList = {
@@ -43,17 +42,7 @@ export class TodoComponent {
       name: name,
       items: []
     }
-
     return todo
-  }
-
-  todoIsCompleted(todo: TodoList) {
-    if (todo.items.length === 0) {
-      return false;
-    }
-
-    let uncompleted = todo.items.find(item => item.complete === false);
-    return !uncompleted;
   }
 
   addTodo() {
@@ -81,13 +70,12 @@ export class TodoComponent {
         }
       ]
     });
-
     prompt.present();
   }
 
   presentTodoModal(todo: TodoList) {
     let todoModal = this.modalCtrl.create(
-      SublistPage, { uuid: todo.uuid, name: todo.name }
+      SublistPage, { items: todo.items, name: todo.name, thisTodo: todo }
     );
     todoModal.onDidDismiss(data => {
       console.log(data);
@@ -95,29 +83,41 @@ export class TodoComponent {
     todoModal.present();
   }
 
+  /*
+
+  todoIsCompleted(todo: TodoList) {
+    if (todo.items.length === 0) {
+      return false;
+    }
+
+    let uncompleted = todo.items.find(item => item.complete === false);
+    return !uncompleted;
+  }
+
   deleteTodoList(todo: TodoList) {
     this.presentConfirm(todo);
   }
 
-  presentConfirm(todo: TodoList) {
-    let alert = this.alertCtrl.create({
-      title: 'Confirm remove',
-      message: `Do you want to remove the ${todo.name} ?`,
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel'
-        },
-        {
-          text: 'Validate',
-          handler: () => {
-            this.service.deleteTodoList(todo.uuid);
+
+    presentConfirm(todo: TodoList) {
+      let alert = this.alertCtrl.create({
+        title: 'Confirm remove',
+        message: `Do you want to remove the ${todo.name} ?`,
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel'
+          },
+          {
+            text: 'Validate',
+            handler: () => {
+              this.service.deleteTodoList(todo.uuid);
+            }
           }
-        }
-      ]
-    });
+        ]
+      });
 
-    alert.present();
-  }
-
+      alert.present();
+    }
+  */
 }

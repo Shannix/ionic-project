@@ -19,6 +19,7 @@ export class SublistPage {
   private todoName: String;
   private todoUuid: String;
   private todoItems: TodoItem[];
+  private thisTodo: TodoList;
 
   myColor: string = 'dark';
   constructor(
@@ -29,12 +30,9 @@ export class SublistPage {
   ) { }
 
   ngOnInit() {
-    this.todoUuid = this.params.get('uuid');
     this.todoName = this.params.get('name');
-
-    this.service.getTodos(this.todoUuid).subscribe(res => {
-      this.todoItems = res;
-    });
+    this.todoItems = this.params.get('items');
+    this.thisTodo = this.params.get('thisTodo');
   }
 
 
@@ -72,10 +70,14 @@ export class SublistPage {
         {
           text: 'Save',
           handler: data => {
-            this.service.addTodo(
-              this.todoUuid,
-              this.initItem(data.name, data.desc)
-            );
+
+            if (this.thisTodo.items == null) {
+              this.thisTodo.items = [this.initItem(data.name, data.desc)];
+            } else {
+              this.thisTodo.items.push(this.initItem(data.name, data.desc));
+            }
+            this.service.UpdateTodoList(this.thisTodo.key, this.thisTodo);
+
           }
         }
       ]
@@ -84,7 +86,7 @@ export class SublistPage {
     prompt.present();
   }
 
-  editItem(item: TodoItem) {
+  editItem(item: TodoItem, i) {
     let prompt = this.alertCtrl.create({
       title: 'Update item',
       inputs: [
@@ -111,18 +113,20 @@ export class SublistPage {
             item.name = data.name;
             item.desc = data.desc;
 
-            this.service.editTodo(this.todoUuid, item);
+            this.thisTodo.items.splice(i, 1);
+            this.thisTodo.items.push(item);
+            this.service.UpdateTodoList(this.thisTodo.key, this.thisTodo);
+            //this.service.editTodo(this.todoUuid, item);
           }
         }
       ]
     });
-
-
     prompt.present();
   }
 
-  deleteItem(item: TodoItem) {
-    this.service.deleteTodo(this.todoUuid, item.uuid);
+  deleteItem(i) {
+    this.thisTodo.items.splice(i, 1);
+    this.service.UpdateTodoList(this.thisTodo.key, this.thisTodo);
   }
 
 }

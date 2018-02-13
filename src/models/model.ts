@@ -1,12 +1,13 @@
 export interface TodoList {
+  key: string,
   uuid: string,
   name: string,
   items: TodoItem[]
 }
 
 export interface TodoItem {
-  uuid?: string,
+  uuid: string,
   name: string,
-  desc?: string,
+  desc: string,
   complete: boolean
 }
