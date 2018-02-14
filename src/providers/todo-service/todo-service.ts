@@ -25,7 +25,6 @@ export class TodoServiceProvider {
       return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
     });
   }
-
   public addTodoList(newTodoList: TodoList) {
     return this.DB.list(this.basePath).push(newTodoList);
   }
@@ -40,11 +39,12 @@ export class TodoServiceProvider {
       .catch(err => console.log(err, 'You do not have access!'));
   }
 
-  public getTodos(name: string) {
-    let item = this.getList().find(d => d.name === 'a1');
-    return item.items;
-  }
-
+  /*
+    public getTodos(name: string) {
+      let item = this.getList().find(d => d.name === 'a1');
+      return item.items;
+    }
+  */
   public deleteEverything() {
     const promise = this.DB.list(this.basePath).remove();
     promise.then(_ => console.log('success'))

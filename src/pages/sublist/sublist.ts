@@ -43,7 +43,6 @@ export class SublistPage {
       desc: desc,
       complete: false
     }
-
     return item
   }
 
@@ -116,7 +115,6 @@ export class SublistPage {
             this.thisTodo.items.splice(i, 1);
             this.thisTodo.items.push(item);
             this.service.UpdateTodoList(this.thisTodo.key, this.thisTodo);
-            //this.service.editTodo(this.todoUuid, item);
           }
         }
       ]
