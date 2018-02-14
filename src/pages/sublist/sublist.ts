@@ -1,27 +1,17 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
-import { TodoItem } from '../../models/model'
+import { TodoItem, TodoList } from '../../models/model'
 import { TodoServiceProvider } from '../../providers/todo-service/todo-service'
-import { HomePage } from '../home/home';
-/**
- * Generated class for the SublistPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
   selector: 'page-sublist',
   templateUrl: 'sublist.html',
 })
-export class SublistPage {
-  private todoName: String;
-  private todoUuid: String;
-  private todoItems: TodoItem[];
-  private thisTodo: TodoList;
 
-  myColor: string = 'dark';
+export class SublistPage {
+  private todoList: TodoList;
+
   constructor(
     public service: TodoServiceProvider,
     public params: NavParams,
@@ -30,20 +20,18 @@ export class SublistPage {
   ) { }
 
   ngOnInit() {
-    this.todoName = this.params.get('name');
-    this.todoItems = this.params.get('items');
-    this.thisTodo = this.params.get('thisTodo');
+    this.todoList = this.params.get('todoList');
   }
 
-
-  initItem(name: string, desc: string) {
+  newItem(name: string, desc: string): TodoItem {
     const item: TodoItem = {
       uuid: null,
       name: name,
       desc: desc,
       complete: false
     }
-    return item
+
+    return item;
   }
 
   addItem() {
@@ -69,14 +57,8 @@ export class SublistPage {
         {
           text: 'Save',
           handler: data => {
-
-            if (this.thisTodo.items == null) {
-              this.thisTodo.items = [this.initItem(data.name, data.desc)];
-            } else {
-              this.thisTodo.items.push(this.initItem(data.name, data.desc));
-            }
-            this.service.UpdateTodoList(this.thisTodo.uuid, this.thisTodo);
-
+            this.todoList.items.push(this.newItem(data.name, data.desc));
+            this.service.UpdateTodoList(this.todoList);
           }
         }
       ]
@@ -85,7 +67,7 @@ export class SublistPage {
     prompt.present();
   }
 
-  editItem(item: TodoItem, i) {
+  editItem(item: TodoItem) {
     let prompt = this.alertCtrl.create({
       title: 'Update item',
       inputs: [
@@ -112,19 +94,24 @@ export class SublistPage {
             item.name = data.name;
             item.desc = data.desc;
 
-            this.thisTodo.items.splice(i, 1);
-            this.thisTodo.items.push(item);
-            this.service.UpdateTodoList(this.thisTodo.uuid, this.thisTodo);
+            this.service.UpdateTodoList(this.todoList);
           }
         }
       ]
     });
+
     prompt.present();
   }
 
-  deleteItem(i) {
-    this.thisTodo.items.splice(i, 1);
-    this.service.UpdateTodoList(this.thisTodo.uuid, this.thisTodo);
+  deleteItem(item: TodoItem) {
+    this.todoList.items = this.todoList.items.filter(
+      currentItem => currentItem.uuid !== item.uuid
+    )
+    this.service.UpdateTodoList(this.todoList);
   }
 
+  getTodos(): TodoItem[] {
+    const todoItems = this.todoList.items;
+    return todoItems ? todoItems : [];
+  }
 }
