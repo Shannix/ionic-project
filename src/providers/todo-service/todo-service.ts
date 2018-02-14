@@ -13,7 +13,7 @@ import 'rxjs/Rx';
 */
 @Injectable()
 export class TodoServiceProvider {
-
+  
   private basePath: string = '/TodoList/';
   private todosList: FirebaseObjectObservable<TodoList>;
   private todoObject: FirebaseListObservable<TodoList>;
