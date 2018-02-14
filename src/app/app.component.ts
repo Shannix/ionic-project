@@ -21,10 +21,6 @@ export class MyApp {
   pages: Array<{ title: string, component: any }>;
 
   constructor(public authService: AuthServiceProvider, public AuthFire: AngularFireAuth, public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
-    console.log("Authentication", this.AuthFire.state);
-    if (this.AuthFire.state) {
-      //  this.rootPage = HomePage;
-    }
 
     this.initializeApp();
 

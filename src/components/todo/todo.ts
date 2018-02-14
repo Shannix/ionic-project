@@ -85,7 +85,7 @@ export class TodoComponent {
 
   todoIsCompleted(todo: TodoList) {
     if (todo.items == null) { return false; }
-    if (todo.items.length === 0) { return false; }
+    //if (todo.items.length === 0) { return false; }
 
     let uncompleted = todo.items.find(item => item.complete === false);
     return !uncompleted;
