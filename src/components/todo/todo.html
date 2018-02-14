@@ -3,7 +3,8 @@
     <ion-item-sliding *ngFor="let todo of todosList  ">
       <ion-item ion-item (click)="presentTodoModal(todo)">
         <h2> {{ todo.name }} </h2>
-        <p> ( {{ todo.items.length }} items )</p>
+        <p *ngIf="todo.items!=null"> ( {{ todo.items.length }} items )</p>
+        <p *ngIf="todo.items==null"> ( 0 items )</p>
       </ion-item>
       <ion-item-options side="right"> <button ion-button expandable (click)="delete(todo.key)"> Delete </button> </ion-item-options>
     </ion-item-sliding>
