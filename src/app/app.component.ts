@@ -2,13 +2,11 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AuthServiceProvider } from '../providers/auth-service/auth-service'
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { AuthPage } from '../pages/auth/auth';
 import { AngularFireAuth } from 'angularfire2/auth';
-import * as firebase from 'firebase/app';
 
 @Component({
   templateUrl: 'app.html'
@@ -20,12 +18,11 @@ export class MyApp {
 
   pages: Array<{ title: string, component: any }>;
 
-  constructor(public authService: AuthServiceProvider, public AuthFire: AngularFireAuth, public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
-    console.log("Authentication", this.AuthFire.state);
-    if (this.AuthFire.state) {
-      //  this.rootPage = HomePage;
-    }
-
+  constructor(public authService: AuthServiceProvider,
+    public AuthFire: AngularFireAuth,
+    public platform: Platform,
+    public statusBar: StatusBar,
+    public splashScreen: SplashScreen) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -34,7 +31,6 @@ export class MyApp {
       { title: 'List', component: ListPage },
       { title: 'logout', component: ListPage }
     ];
-
   }
 
   initializeApp() {
