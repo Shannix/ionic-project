@@ -3,9 +3,8 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service'
+import { ToastController } from 'ionic-angular';
 import * as firebase from 'firebase/app';
-
-
 
 @IonicPage()
 @Component({
@@ -14,33 +13,68 @@ import * as firebase from 'firebase/app';
 })
 
 export class AuthPage {
-  login = "";
-  password = "";
+  displayName;
 
-  constructor(public authService: AuthServiceProvider, public AuthFire: AngularFireAuth, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public authService: AuthServiceProvider,
+    public afAuth: AngularFireAuth,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private toastCtrl: ToastController
+  ) {
+    afAuth.authState.subscribe(user => {
+      if (!user) {
+        this.displayName = null;
+        return;
+      }
+
+      this.displayName = user.displayName;
+      console.log(this.displayName);
+    });
   }
 
-
-  loginGoogle() {
-    const result = this.AuthFire.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-    if (this.AuthFire.authState) {
-      this.authService.login();
-      this.navCtrl.setRoot(HomePage);
-    }
+  googleLogin() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    return this.afAuth.auth.signInWithPopup(provider)
+      .then(() => {
+        this.authService.login();
+        this.navCtrl.setRoot(HomePage);
+      }).catch(() => {
+        this.failToConnectMessage();
+      });
   }
 
-  async loginUser(login, password) {
-    const result = this.AuthFire.auth.signInWithEmailAndPassword(login, password);
-    if (result) {
-      this.authService.login();
-      this.navCtrl.setRoot(HomePage);
+  async userLogin(email, password) {
+    if (!email || !password) {
+      this.failToConnectMessage();
+      return;
     }
+
+    return this.afAuth.auth.signInWithEmailAndPassword(email, password)
+      .then(() => {
+        this.authService.login();
+        this.navCtrl.setRoot(HomePage);
+      })
+      .catch(() => {
+        this.failToConnectMessage();
+      });
   }
 
   isAuthenticated() {
     return this.authService.authenticated();
   }
 
+  failToConnectMessage() {
+    let toast = this.toastCtrl.create({
+      message: 'Bad email or password',
+      duration: 3000,
+      position: 'top'
+    });
 
+    toast.onDidDismiss(() => {
+      console.log('Fail to connect');
+    });
 
+    toast.present();
+  }
 }

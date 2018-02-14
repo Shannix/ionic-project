@@ -16,7 +16,6 @@ import { FirebaseObjectObservable } from 'angularfire2';
   templateUrl: 'todo.html'
 })
 export class TodoComponent {
-  //  private todosList: FirebaseListObservable<TodoList[]>;
   private todosList: FirebaseObjectObservable<TodoList>;
 
   constructor(
@@ -29,11 +28,12 @@ export class TodoComponent {
   ngOnInit() {
     this.service.getList().subscribe(list => {
       this.todosList = list;
+      console.log("todolist", this.todosList);
     });
   }
 
-  delete(i: string) {
-    this.service.deleteTodoList(i);
+  deleteTodoList(todo: TodoList) {
+    this.service.deleteTodoList(todo);
   }
 
   initTodo(name: string) {
@@ -83,41 +83,11 @@ export class TodoComponent {
     todoModal.present();
   }
 
-  /*
-
   todoIsCompleted(todo: TodoList) {
-    if (todo.items.length === 0) {
-      return false;
-    }
+    if (todo.items == null) { return false; }
+    if (todo.items.length === 0) { return false; }
 
     let uncompleted = todo.items.find(item => item.complete === false);
     return !uncompleted;
   }
-
-  deleteTodoList(todo: TodoList) {
-    this.presentConfirm(todo);
-  }
-
-
-    presentConfirm(todo: TodoList) {
-      let alert = this.alertCtrl.create({
-        title: 'Confirm remove',
-        message: `Do you want to remove the ${todo.name} ?`,
-        buttons: [
-          {
-            text: 'Cancel',
-            role: 'cancel'
-          },
-          {
-            text: 'Validate',
-            handler: () => {
-              this.service.deleteTodoList(todo.uuid);
-            }
-          }
-        ]
-      });
-
-      alert.present();
-    }
-  */
 }

@@ -23,7 +23,6 @@ export class AuthServiceProvider {
     this.isLoggedIn = false;
   }
 
-
   authenticated(): boolean {
     return this.isLoggedIn;
   }

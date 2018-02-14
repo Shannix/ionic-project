@@ -75,7 +75,7 @@ export class SublistPage {
             } else {
               this.thisTodo.items.push(this.initItem(data.name, data.desc));
             }
-            this.service.UpdateTodoList(this.thisTodo.key, this.thisTodo);
+            this.service.UpdateTodoList(this.thisTodo.uuid, this.thisTodo);
 
           }
         }
@@ -114,7 +114,7 @@ export class SublistPage {
 
             this.thisTodo.items.splice(i, 1);
             this.thisTodo.items.push(item);
-            this.service.UpdateTodoList(this.thisTodo.key, this.thisTodo);
+            this.service.UpdateTodoList(this.thisTodo.uuid, this.thisTodo);
           }
         }
       ]
@@ -124,7 +124,7 @@ export class SublistPage {
 
   deleteItem(i) {
     this.thisTodo.items.splice(i, 1);
-    this.service.UpdateTodoList(this.thisTodo.key, this.thisTodo);
+    this.service.UpdateTodoList(this.thisTodo.uuid, this.thisTodo);
   }
 
 }
