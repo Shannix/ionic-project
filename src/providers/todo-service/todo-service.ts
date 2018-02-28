@@ -7,17 +7,18 @@ import { AngularFireAuth } from 'angularfire2/auth';
 
 @Injectable()
 export class TodoServiceProvider {
-  private basePath: string = '/TodoList/';
+  private basePath: string = '/TodoList';
   private email: string = 'none';
 
   constructor(public DB: AngularFireDatabase, public authFire: AngularFireAuth) {
     this.authFire.authState.subscribe(data => {
-      if (data) { this.email = data.email; }
+      if (data) { this.email = data.email.replace(/\./g, '%'); }
     });
   }
 
   public getList(): Observable<TodoList[]> {
-    return this.DB.list(this.basePath, ref => ref.orderByChild('email').equalTo(this.email))
+    return this.DB.list(this.basePath, ref => ref.orderByChild('authorization/' + this.email).equalTo(true))
+      //  return this.DB.list(this.basePath, ref => ref.where('email', '==', this.email))
       //  return this.DB.list(this.basePath, ref => ref.orderByChild('email2').startAt('derradji2993@gmail.com'))
       .snapshotChanges()
       .map(changes => {
