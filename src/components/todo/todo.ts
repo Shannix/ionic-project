@@ -4,6 +4,7 @@ import { TodoList } from '../../models/model'
 import { ModalController, AlertController } from 'ionic-angular';
 import { SublistPage } from '../../pages/sublist/sublist';
 import { FirebaseObjectObservable } from 'angularfire2';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Component({
   selector: 'todo-comp',
@@ -11,18 +12,22 @@ import { FirebaseObjectObservable } from 'angularfire2';
 })
 export class TodoComponent {
   private todosList: FirebaseObjectObservable<TodoList>;
-
+  private email: string = "none";
   constructor(
     public modalCtrl: ModalController,
     public todoServiceProvider: TodoServiceProvider,
     public alertCtrl: AlertController,
-    public service: TodoServiceProvider
+    public service: TodoServiceProvider,
+    public authFire: AngularFireAuth
   ) { }
 
   ngOnInit() {
     this.service.getList().subscribe(list => {
       this.todosList = list;
       console.log("todolist", this.todosList);
+    });
+    this.authFire.authState.subscribe(data => {
+      if (data) { this.email = data.email; }
     });
   }
 
@@ -32,6 +37,7 @@ export class TodoComponent {
 
   newTodoList(name: string) {
     const todo: TodoList = {
+      email: this.email,
       uuid: null,
       name: name,
       items: []

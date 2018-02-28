@@ -3,15 +3,22 @@ import { TodoList } from "../../models/model";
 import { Observable } from "rxjs/Observable";
 import { AngularFireDatabase } from 'angularfire2/database';
 import 'rxjs/Rx';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Injectable()
 export class TodoServiceProvider {
   private basePath: string = '/TodoList/';
+  private email: string = 'none';
 
-  constructor(public DB: AngularFireDatabase) { }
+  constructor(public DB: AngularFireDatabase, public authFire: AngularFireAuth) {
+    this.authFire.authState.subscribe(data => {
+      if (data) { this.email = data.email; }
+    });
+  }
 
   public getList(): Observable<TodoList[]> {
-    return this.DB.list(this.basePath, ref => ref.orderByChild('name'))
+    return this.DB.list(this.basePath, ref => ref.orderByChild('email').equalTo(this.email))
+      //  return this.DB.list(this.basePath, ref => ref.orderByChild('email2').startAt('derradji2993@gmail.com'))
       .snapshotChanges()
       .map(changes => {
         return changes.map(c => ({
