@@ -2,7 +2,7 @@ export interface TodoList {
   email: string,
   uuid: string,
   name: string,
-  readers: [],
+  authorization: [],
   items: TodoItem[]
 }
 

@@ -27,7 +27,7 @@ export class TodoComponent {
       console.log("todolist", this.todosList);
     });
     this.authFire.authState.subscribe(data => {
-      if (data) { this.email = data.email; }
+      if (data) { this.email = data.email.replace(/\./g, '%');; }
     });
   }
 
@@ -36,12 +36,16 @@ export class TodoComponent {
   }
 
   newTodoList(name: string) {
+
     const todo: TodoList = {
       email: this.email,
       uuid: null,
       name: name,
       items: []
     }
+    todo.authorization = {};
+    todo.authorization[this.email] = true;
+
     return todo;
   }
 
