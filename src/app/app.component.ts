@@ -4,7 +4,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthServiceProvider } from '../providers/auth-service/auth-service'
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
 import { AuthPage } from '../pages/auth/auth';
 import { AngularFireAuth } from 'angularfire2/auth';
 
@@ -29,8 +28,6 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage },
-      { title: 'logout', component: ListPage }
     ];
   }
 

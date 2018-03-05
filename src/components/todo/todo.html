@@ -1,10 +1,9 @@
 <ion-content>
   <ion-list>
-    <ion-item-sliding *ngFor="let todo of todosList;">
+    <ion-item-sliding *ngFor="let todo of getTodosList();">
       <ion-item (click)="displayItemsManager(todo)" [ngClass]="{'todo--completed': todoIsCompleted(todo)}">
         <h2> {{ todo.name }} </h2>
-        <p *ngIf="todo.items!=null">( {{ todo.items.length }} items )</p>
-        <p *ngIf="todo.items==null">( 0 items )</p>
+        <p>( {{ todo.items.length }} items )</p>
       </ion-item>
       <ion-item-options side="right">
         <button ion-button expandable (click)="deleteTodoList(todo)">

@@ -3,14 +3,13 @@ import { TodoServiceProvider } from '../../providers/todo-service/todo-service'
 import { TodoList } from '../../models/model'
 import { ModalController, AlertController } from 'ionic-angular';
 import { SublistPage } from '../../pages/sublist/sublist';
-import { FirebaseObjectObservable } from 'angularfire2';
 
 @Component({
   selector: 'todo-comp',
   templateUrl: 'todo.html'
 })
 export class TodoComponent {
-  private todosList: FirebaseObjectObservable<TodoList>;
+  private todosList;
 
   constructor(
     public modalCtrl: ModalController,
@@ -20,10 +19,13 @@ export class TodoComponent {
   ) { }
 
   ngOnInit() {
-    this.service.getList().subscribe(list => {
+    this.service.getTodosList().subscribe(list => {
       this.todosList = list;
-      console.log("todolist", this.todosList);
     });
+  }
+
+  getTodosList() {
+    return this.todosList;
   }
 
   deleteTodoList(todo: TodoList) {
@@ -68,6 +70,8 @@ export class TodoComponent {
   }
 
   displayItemsManager(todoList: TodoList) {
+    console.log(todoList);
+
     let todoModal = this.modalCtrl.create(
       SublistPage, { todoList: todoList }
     );

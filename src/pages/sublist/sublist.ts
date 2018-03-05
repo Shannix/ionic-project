@@ -20,18 +20,24 @@ export class SublistPage {
   ) { }
 
   ngOnInit() {
-    this.todoList = this.params.get('todoList');
+    this.subscribeToList(this.params.get('todoList'));
+  }
+
+  subscribeToList(todoList: TodoList) {
+    this.todoList = todoList;
+
+    this.service.getTodosList().subscribe(list => {
+      this.todoList = list.find(todo => todo.uuid === this.todoList.uuid);
+    });
   }
 
   newItem(name: string, desc: string): TodoItem {
-    const item: TodoItem = {
+    return {
       uuid: null,
       name: name,
       desc: desc,
       complete: false
     }
-
-    return item;
   }
 
   addItem() {
@@ -57,8 +63,7 @@ export class SublistPage {
         {
           text: 'Save',
           handler: data => {
-            this.todoList.items.push(this.newItem(data.name, data.desc));
-            this.service.UpdateTodoList(this.todoList);
+            this.service.addItem(this.todoList, this.newItem(data.name, data.desc));
           }
         }
       ]
@@ -94,7 +99,7 @@ export class SublistPage {
             item.name = data.name;
             item.desc = data.desc;
 
-            this.service.UpdateTodoList(this.todoList);
+            this.service.UpdateTodoItem(this.todoList, item);
           }
         }
       ]
@@ -103,15 +108,15 @@ export class SublistPage {
     prompt.present();
   }
 
-  deleteItem(item: TodoItem) {
-    this.todoList.items = this.todoList.items.filter(
-      currentItem => currentItem.uuid !== item.uuid
-    )
-    this.service.UpdateTodoList(this.todoList);
+  isChecked(item: TodoItem) {
+    this.service.UpdateTodoItem(this.todoList, item);
   }
 
-  getTodos(): TodoItem[] {
-    const todoItems = this.todoList.items;
-    return todoItems ? todoItems : [];
+  deleteItem(item: TodoItem) {
+    this.service.deleteItem(this.todoList, item);
+  }
+
+  getItems(): TodoItem[] {
+    return this.todoList.items;
   }
 }

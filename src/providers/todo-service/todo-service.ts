@@ -1,40 +1,75 @@
 import { Injectable } from '@angular/core';
-import { TodoList } from "../../models/model";
+import { TodoList, TodoItem } from "../../models/model";
 import { Observable } from "rxjs/Observable";
 import { AngularFireDatabase } from 'angularfire2/database';
 import 'rxjs/Rx';
 
 @Injectable()
 export class TodoServiceProvider {
-  private basePath: string = '/TodoList/';
+  private basePath: string = '/TodoList';
 
   constructor(public DB: AngularFireDatabase) { }
 
-  public getList(): Observable<TodoList[]> {
-    return this.DB.list(this.basePath, ref => ref.orderByChild('name'))
-      .snapshotChanges()
-      .map(changes => {
-        return changes.map(c => ({
-          uuid: c.payload.key,
-          items: [],
-          ...c.payload.val()
-        }));
-      });
+  public getTodosList(): Observable<TodoList[]> {
+    return this.todoListPresenter(
+      this.DB.list<TodoList>(this.basePath).snapshotChanges()
+    );
   }
 
   public addTodoList(newTodoList: TodoList) {
-    return this.DB.list(this.basePath).push(newTodoList);
+    this.DB.list(this.basePath).push(newTodoList);
   }
 
-  public UpdateTodoList(todoList: TodoList) {
-    this.DB.list(this.basePath).update(
-      todoList.uuid, todoList
+  public addItem(todoList: TodoList, newtodoItem: TodoItem) {
+    this.DB.list(`${this.basePath}/${todoList.uuid}/items`).push(newtodoItem);
+  }
+
+  public UpdateTodoItem(todoList: TodoList, todoItem: TodoItem) {
+    this.DB.list(`${this.basePath}/${todoList.uuid}/items`).update(
+      todoItem.uuid, todoItem
     );
+  }
+
+  public deleteItem(todoList: TodoList, todoItem: TodoItem) {
+    this.DB.list(`${this.basePath}/${todoList.uuid}/items`).remove(todoItem.uuid);
   }
 
   public deleteTodoList(todo: TodoList) {
     const promise = this.DB.list(this.basePath).remove(todo.uuid);
     promise.then(_ => console.log('success'))
       .catch(err => console.log(err, 'fail!'));
+  }
+
+
+  private test(todoList) {
+    console.log(todoList);
+    return todoList.map(changes => {
+      return changes.map(c => ({
+        uuid: c.payload.key,
+        ...c.payload.val()
+      }));
+    });
+  }
+
+  private todoListPresenter(todoList) {
+    return todoList.map(changes => {
+      return changes.map(c => ({
+        uuid: c.payload.key,
+        ...c.payload.val(),
+        items: this.itemsPresenter(c.payload.val().items)
+      }));
+    });
+  }
+
+  public itemsPresenter(items) {
+    if (!items) { return []; }
+
+    return Object.keys(items).map(function(key) {
+      const item = items[key];
+      return {
+        uuid: key,
+        ...item
+      };
+    });
   }
 }
