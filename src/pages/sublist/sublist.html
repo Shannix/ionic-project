@@ -18,7 +18,7 @@
           {{ item.name }}
           <p>{{ item.desc }}</p>
         </ion-label>
-        <ion-checkbox [(ngModel)]="item.complete" (ionChange)="isChecked(item)"></ion-checkbox>
+        <ion-checkbox [(ngModel)]="item.complete" (ionChange)="onToggleCompletedItem(item)"></ion-checkbox>
         <button (click)="editItem(item)" ion-button clear item-end>
         <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
       </button>

@@ -27,7 +27,7 @@ export class SublistPage {
     this.todoList = todoList;
 
     this.service.getTodosList().subscribe(list => {
-      this.todoList = list.find(todo => todo.uuid === this.todoList.uuid);
+      this.todoList = list.find(todo => todo.uuid === this.todoList.uuid) || {};
     });
   }
 
@@ -108,7 +108,7 @@ export class SublistPage {
     prompt.present();
   }
 
-  isChecked(item: TodoItem) {
+  onToggleCompletedItem(item: TodoItem) {
     this.service.UpdateTodoItem(this.todoList, item);
   }
 
