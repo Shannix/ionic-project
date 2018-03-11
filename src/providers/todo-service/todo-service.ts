@@ -40,17 +40,6 @@ export class TodoServiceProvider {
       .catch(err => console.log(err, 'fail!'));
   }
 
-
-  private test(todoList) {
-    console.log(todoList);
-    return todoList.map(changes => {
-      return changes.map(c => ({
-        uuid: c.payload.key,
-        ...c.payload.val()
-      }));
-    });
-  }
-
   private todoListPresenter(todoList) {
     return todoList.map(changes => {
       return changes.map(c => ({
