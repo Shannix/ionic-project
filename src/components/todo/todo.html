@@ -1,11 +1,15 @@
-<ion-content>
+<ion-content Style="">
   <ion-list>
     <ion-item-sliding *ngFor="let todo of getTodosList();">
       <ion-item (click)="displayItemsManager(todo)" [ngClass]="{'todo--completed': todoIsCompleted(todo)}">
         <h2> {{ todo.name }} </h2>
-        <p>( {{ todo.items.length }} items )</p>
+        <p>( {{ todo.items.length }} items ) - Shared with : {{ todo.authorization }}</p>
+
       </ion-item>
       <ion-item-options side="right">
+        <button ion-button expandable (click)="displayShareManager(todo)">
+          Share
+        </button>
         <button ion-button expandable (click)="deleteTodoList(todo)">
           Delete
         </button>
@@ -16,6 +20,9 @@
 
 <ion-footer>
   <ion-fab bottom right>
+    <button ion-fab>
+    <ion-icon name="brush"></ion-icon>
+  </button>
     <button ion-fab (click)="addTodo()">
     <ion-icon name="add"></ion-icon>
   </button>

@@ -1,7 +1,8 @@
 export interface TodoList {
   uuid: string,
   name: string,
-  items: TodoItem[]
+  items: TodoItem[],
+  authorization: []
 }
 
 export interface TodoItem {

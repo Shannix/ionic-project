@@ -3,17 +3,26 @@ import { TodoList, TodoItem } from "../../models/model";
 import { Observable } from "rxjs/Observable";
 import { AngularFireDatabase } from 'angularfire2/database';
 import 'rxjs/Rx';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Injectable()
 export class TodoServiceProvider {
   private basePath: string = '/TodoList';
 
-  constructor(public DB: AngularFireDatabase) { }
+  constructor(public DB: AngularFireDatabase, public authFire: AngularFireAuth) { }
+
+  public getEmail() {
+    let email: string = 'none';
+    this.authFire.authState.subscribe(data => {
+      if (data) { this.email = data.email.replace(/\./g, '%'); }
+    });
+    return this.email;
+  }
 
   public getTodosList(): Observable<TodoList[]> {
     return this.todoListPresenter(
-      this.DB.list<TodoList>(this.basePath).snapshotChanges()
-    );
+      this.DB.list(this.basePath, ref => ref.orderByChild('authorization/derradji2993@gmail%com').equalTo(true))
+        .snapshotChanges());
   }
 
   public addTodoList(newTodoList: TodoList) {
@@ -23,7 +32,15 @@ export class TodoServiceProvider {
   public addItem(todoList: TodoList, newtodoItem: TodoItem) {
     this.DB.list(`${this.basePath}/${todoList.uuid}/items`).push(newtodoItem);
   }
-
+  public updateAuthorization(todoList: TodoList, email: string) {
+    todoList.authorization[email.replace(/\./g, '%')] = true;
+    this.UpdateTodoList(todoList);
+  }
+  public UpdateTodoList(todoList: TodoList) {
+    this.DB.list(this.basePath).update(
+      todoList.uuid, todoList
+    );
+  }
   public UpdateTodoItem(todoList: TodoList, todoItem: TodoItem) {
     this.DB.list(`${this.basePath}/${todoList.uuid}/items`).update(
       todoItem.uuid, todoItem
