@@ -5,7 +5,7 @@ import { ModalController, AlertController } from 'ionic-angular';
 import { SublistPage } from '../../pages/sublist/sublist';
 
 @Component({
-  selector: 'todo-comp',
+  selector: 'todos-list',
   templateUrl: 'todo.html'
 })
 export class TodoComponent {
@@ -32,12 +32,14 @@ export class TodoComponent {
     this.service.deleteTodoList(todo);
   }
 
-  newTodoList(name: string) {
+  newTodoList(name: string): TodoList {
     const todo: TodoList = {
       uuid: null,
       name: name,
-      items: []
+      items: [],
+      image: null
     }
+
     return todo;
   }
 

@@ -2,8 +2,11 @@
   <ion-list>
     <ion-item-sliding *ngFor="let todo of getTodosList();">
       <ion-item (click)="displayItemsManager(todo)" [ngClass]="{'todo--completed': todoIsCompleted(todo)}">
+        <ion-img *ngIf="todo.image" item-start [src]="todo.image.urlLocation">
+        </ion-img>
         <h2> {{ todo.name }} </h2>
         <p>( {{ todo.items.length }} items )</p>
+
       </ion-item>
       <ion-item-options side="right">
         <button ion-button expandable (click)="deleteTodoList(todo)">
@@ -17,7 +20,7 @@
 <ion-footer>
   <ion-fab bottom right>
     <button ion-fab (click)="addTodo()">
-    <ion-icon name="add"></ion-icon>
-  </button>
+      <ion-icon name="add"></ion-icon>
+    </button>
   </ion-fab>
 </ion-footer>

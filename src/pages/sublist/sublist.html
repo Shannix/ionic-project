@@ -8,6 +8,7 @@
     <ion-title text-center>
       {{ todoList.name }}
     </ion-title>
+    <upload-images [item]="getTodoList()"></upload-images>
   </ion-navbar>
 </ion-header>
 <ion-content padding>
@@ -18,10 +19,11 @@
           {{ item.name }}
           <p>{{ item.desc }}</p>
         </ion-label>
-        <ion-checkbox [(ngModel)]="item.complete" (ionChange)="onToggleCompletedItem(item)"></ion-checkbox>
+        <ion-checkbox [(ngModel)]="item.complete" (ionChange)="onToggleCompletedItem(item)">
+        </ion-checkbox>
         <button (click)="editItem(item)" ion-button clear item-end>
-        <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
-      </button>
+          <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
+        </button>
       </ion-item>
       <ion-item-options side="right">
         <button ion-button expandable (click)="deleteItem(item)">Delete</button>

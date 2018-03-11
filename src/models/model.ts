@@ -1,7 +1,8 @@
 export interface TodoList {
   uuid: string,
   name: string,
-  items: TodoItem[]
+  items: TodoItem[],
+  image: ImageItem
 }
 
 export interface TodoItem {
@@ -9,4 +10,10 @@ export interface TodoItem {
   name: string,
   desc: string,
   complete: boolean
+}
+
+export interface ImageItem {
+  bucketLocation: string,
+  urlLocation: string,
+  title: string
 }

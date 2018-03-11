@@ -1,6 +1,11 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import {
+  IonicPage,
+  NavController,
+  NavParams,
+  AlertController
+} from 'ionic-angular';
 import { TodoItem, TodoList } from '../../models/model'
+import { Component } from '@angular/core';
 import { TodoServiceProvider } from '../../providers/todo-service/todo-service'
 
 @IonicPage()
@@ -30,12 +35,14 @@ export class SublistPage {
   }
 
   newItem(name: string, desc: string): TodoItem {
-    return {
+    const todoItem: TodoItem = {
       uuid: null,
       name: name,
       desc: desc,
       complete: false
     }
+
+    return todoItem;
   }
 
   addItem() {
@@ -44,10 +51,12 @@ export class SublistPage {
       inputs: [
         {
           name: 'name',
+          type: 'text',
           placeholder: "Item name",
         },
         {
           name: 'desc',
+          type: 'text',
           placeholder: 'Write your description'
         },
       ],
@@ -98,7 +107,7 @@ export class SublistPage {
             item.name = data.name;
             item.desc = data.desc;
 
-            this.service.UpdateTodoItem(this.todoList, item);
+            this.service.updateTodoItem(this.todoList, item);
           }
         }
       ]
@@ -108,7 +117,7 @@ export class SublistPage {
   }
 
   onToggleCompletedItem(item: TodoItem) {
-    this.service.UpdateTodoItem(this.todoList, item);
+    this.service.updateTodoItem(this.todoList, item);
   }
 
   deleteItem(item: TodoItem) {
@@ -118,5 +127,9 @@ export class SublistPage {
 
   getItems(): TodoItem[] {
     return this.todoList.items;
+  }
+
+  getTodoList(): TodoList {
+    return this.todoList;
   }
 }

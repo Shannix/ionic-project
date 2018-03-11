@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { TodoList, TodoItem } from "../../models/model";
+import { TodoList, TodoItem, ImageItem } from "../../models/model";
 import { Observable } from "rxjs/Observable";
 import { AngularFireDatabase } from 'angularfire2/database';
+import { storage } from 'firebase';
+
 import 'rxjs/Rx';
 
 @Injectable()
@@ -24,7 +26,11 @@ export class TodoServiceProvider {
     this.DB.list(`${this.basePath}/${todoList.uuid}/items`).push(newtodoItem);
   }
 
-  public UpdateTodoItem(todoList: TodoList, todoItem: TodoItem) {
+  public addImageToTodoList(todoList: TodoList, image: ImageItem) {
+    this.DB.object(`${this.basePath}/${todoList.uuid}/image`).set(image);
+  }
+
+  public updateTodoItem(todoList: TodoList, todoItem: TodoItem) {
     this.DB.list(`${this.basePath}/${todoList.uuid}/items`).update(
       todoItem.uuid, todoItem
     );
@@ -38,6 +44,21 @@ export class TodoServiceProvider {
     const promise = this.DB.list(this.basePath).remove(todo.uuid);
     promise.then(_ => console.log('success'))
       .catch(err => console.log(err, 'fail!'));
+
+    //Remove image from firebase bucket
+    todo.image && this.deleteImageIntoBucket(todo.image);
+  }
+
+  private deleteImageIntoBucket(image: ImageItem) {
+    var desertRef = storage().ref().child(image.bucketLocation);
+
+    desertRef.delete()
+      .then(function() {
+        console.log('Delete with success');
+      })
+      .catch(function(error) {
+        console.log(error, 'Delete fail!');
+      });
   }
 
   private todoListPresenter(todoList) {

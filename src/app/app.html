@@ -7,18 +7,13 @@
 
   <ion-content>
     <ion-list>
-
-<div *ngIf="AuthFire.authState | async as authUser; ">
-<img [src]="authUser.photoURL">
-<h1>  {{ authUser.displayName }}  </h1>
-  <button ion-button full (click)="logout()" >Logout</button>
-</div>
-
-
-
+      <div *ngIf="AuthFire.authState | async as authUser; ">
+        <img [src]="authUser.photoURL">
+        <h1>  {{ authUser.displayName }}  </h1>
+        <button ion-button full (click)="logout()">Logout</button>
+      </div>
     </ion-list>
   </ion-content>
-
 </ion-menu>
 
 <!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
