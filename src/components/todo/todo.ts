@@ -3,6 +3,7 @@ import { TodoServiceProvider } from '../../providers/todo-service/todo-service'
 import { TodoList } from '../../models/model'
 import { ModalController, AlertController } from 'ionic-angular';
 import { SublistPage } from '../../pages/sublist/sublist';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Component({
   selector: 'todos-list',
@@ -10,17 +11,24 @@ import { SublistPage } from '../../pages/sublist/sublist';
 })
 export class TodoComponent {
   private todosList;
+  private email: string = "none";
 
   constructor(
     public modalCtrl: ModalController,
     public todoServiceProvider: TodoServiceProvider,
     public alertCtrl: AlertController,
-    public service: TodoServiceProvider
+    public service: TodoServiceProvider,
+    public authFire: AngularFireAuth
   ) { }
 
   ngOnInit() {
     this.service.getTodosList().subscribe(list => {
       this.todosList = list;
+      console.log("todolist", list);
+    });
+
+    this.authFire.authState.subscribe(data => {
+      if (data) { this.email = data.email.replace(/\./g, '%'); }
     });
   }
 
@@ -39,7 +47,12 @@ export class TodoComponent {
       items: [],
       image: null
     }
+<<<<<<< HEAD
 
+=======
+    todo.authorization = {};
+    todo.authorization[this.email] = true;
+>>>>>>> Share-todo
     return todo;
   }
 
@@ -61,7 +74,7 @@ export class TodoComponent {
           }
         },
         {
-          text: 'Save',
+          text: 'Share',
           handler: data => {
             this.service.addTodoList(this.newTodoList(data.name));
           }
@@ -70,6 +83,35 @@ export class TodoComponent {
     });
     prompt.present();
   }
+
+  displayShareManager(todoList: TodoList) {
+    let prompt = this.alertCtrl.create({
+      title: 'Share this todo',
+      message: "Enter a valid email to share this todo",
+      inputs: [
+        {
+          name: 'name',
+          placeholder: 'new email'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Share',
+          handler: data => {
+            this.service.updateAuthorization(todoList, data.name);
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
 
   displayItemsManager(todoList: TodoList) {
     console.log(todoList);
