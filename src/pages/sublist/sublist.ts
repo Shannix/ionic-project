@@ -20,14 +20,12 @@ export class SublistPage {
   ) { }
 
   ngOnInit() {
-    this.subscribeToList(this.params.get('todoList'));
+    this.todoList = this.params.get('todoList');
   }
 
   subscribeToList(todoList: TodoList) {
-    this.todoList = todoList;
-
     this.service.getTodosList().subscribe(list => {
-      this.todoList = list.find(todo => todo.uuid === this.todoList.uuid) || {};
+      this.todoList = list.find(todo => todo.uuid === this.todoList.uuid);
     });
   }
 
@@ -64,6 +62,7 @@ export class SublistPage {
           text: 'Save',
           handler: data => {
             this.service.addItem(this.todoList, this.newItem(data.name, data.desc));
+            this.subscribeToList(this.todoList);
           }
         }
       ]
@@ -114,6 +113,7 @@ export class SublistPage {
 
   deleteItem(item: TodoItem) {
     this.service.deleteItem(this.todoList, item);
+    this.subscribeToList(this.todoList);
   }
 
   getItems(): TodoItem[] {
