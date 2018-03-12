@@ -11,17 +11,10 @@ export class TodoServiceProvider {
 
   constructor(public DB: AngularFireDatabase, public authFire: AngularFireAuth) { }
 
-  public getEmail() {
-    let email: string = 'none';
-    this.authFire.authState.subscribe(data => {
-      if (data) { this.email = data.email.replace(/\./g, '%'); }
-    });
-    return this.email;
-  }
 
-  public getTodosList(): Observable<TodoList[]> {
+  public getTodosList(email: string): Observable<TodoList[]> {
     return this.todoListPresenter(
-      this.DB.list(this.basePath, ref => ref.orderByChild('authorization/derradji2993@gmail%com').equalTo(true))
+      this.DB.list(this.basePath, ref => ref.orderByChild('authorization/' + email).equalTo(true))
         .snapshotChanges());
   }
 

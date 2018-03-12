@@ -22,15 +22,19 @@ export class TodoComponent {
   ) { }
 
   ngOnInit() {
-    this.service.getTodosList().subscribe(list => {
-      this.todosList = list;
-      console.log("todolist", list);
+    this.authFire.authState.subscribe(data => {
+      if (data) {
+        this.email = data.email.replace(/\./g, '%'); alert(data.email);
+        this.service.getTodosList(data.email.replace(/\./g, '%')).subscribe(list => {
+          this.todosList = list;
+          console.log("todolist", list);
+        });
+      }
     });
 
-    this.authFire.authState.subscribe(data => {
-      if (data) { this.email = data.email.replace(/\./g, '%'); }
-    });
+
   }
+
 
   getTodosList() {
     return this.todosList;
