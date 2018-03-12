@@ -1,8 +1,9 @@
 import {
+  AlertController,
   IonicPage,
   NavController,
   NavParams,
-  AlertController
+  PopoverController
 } from 'ionic-angular';
 import { TodoItem, TodoList } from '../../models/model'
 import { Component } from '@angular/core';
@@ -21,7 +22,8 @@ export class SublistPage {
     public service: TodoServiceProvider,
     public params: NavParams,
     public alertCtrl: AlertController,
-    public navCtrl: NavController
+    public navCtrl: NavController,
+    public popoverCtrl: PopoverController
   ) { }
 
   ngOnInit() {
@@ -43,6 +45,17 @@ export class SublistPage {
     }
 
     return todoItem;
+  }
+
+  goBack() {
+    this.navCtrl.pop();
+  }
+
+  presentSubMenu() {
+    //<upload-images [item]="getTodoList()"></upload-images>
+
+    let popover = this.popoverCtrl.create("");
+    popover.present();
   }
 
   addItem() {
