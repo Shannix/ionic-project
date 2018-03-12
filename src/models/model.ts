@@ -2,7 +2,10 @@ export interface TodoList {
   uuid: string,
   name: string,
   items: TodoItem[],
+<<<<<<< HEAD
   image: ImageItem,
+=======
+>>>>>>> bug email fixed
   authorization: string[]
 }
 

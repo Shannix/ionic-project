@@ -10,12 +10,22 @@ import 'rxjs/Rx';
 export class TodoServiceProvider {
   private basePath: string = '/TodoList';
 
+<<<<<<< HEAD
   constructor(public DB: AngularFireDatabase) { }
+=======
+  constructor(public DB: AngularFireDatabase, public authFire: AngularFireAuth) { }
 
-  public getTodosList(): Observable<TodoList[]> {
+>>>>>>> bug email fixed
+
+  public getTodosList(email: string): Observable<TodoList[]> {
     return this.todoListPresenter(
+<<<<<<< HEAD
       this.DB.list<TodoList>(this.basePath).snapshotChanges()
     );
+=======
+      this.DB.list(this.basePath, ref => ref.orderByChild('authorization/' + email).equalTo(true))
+        .snapshotChanges());
+>>>>>>> bug email fixed
   }
 
   public addTodoList(newTodoList: TodoList) {
