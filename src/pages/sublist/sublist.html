@@ -27,6 +27,13 @@
     <ion-item-sliding *ngFor="let item of getItems();">
       <ion-item>
         <ion-label *ngIf="item.complete==false">
+<<<<<<< HEAD
+=======
+          {{ item.name }}
+          <p>{{ item.desc }}</p>
+        </ion-label>
+        <ion-label *ngIf="item.complete==true" class="barre">
+>>>>>>> ab3e53e8a37184360b6fd2ba570843ccd6121f2e
           {{ item.name }}
           <p>{{ item.desc }}</p>
         </ion-label>

@@ -32,7 +32,6 @@ export class TodoComponent {
       }
     });
   }
-
   getTodosList() {
     return this.todosList;
   }
@@ -81,6 +80,11 @@ export class TodoComponent {
     prompt.present();
   }
 
+  validateEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+  }
+
   displayShareManager(todoList: TodoList) {
     let prompt = this.alertCtrl.create({
       title: 'Share this todo',
@@ -101,7 +105,11 @@ export class TodoComponent {
         {
           text: 'Share',
           handler: data => {
-            this.service.updateAuthorization(todoList, data.name);
+            if (this.validateEmail(data.name)) {
+              this.service.updateAuthorization(todoList, data.name);
+            } else {
+              alert("Email invalid!")
+            }
           }
         }
       ]

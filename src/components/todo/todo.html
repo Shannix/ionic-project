@@ -7,10 +7,14 @@
         </ion-thumbnail>
         <h2> {{ todo.name }} </h2>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <p>( {{ todo.items.length }} items )</p>
 =======
         <p>( {{ todo.items.length }} items ) - Shared with : {{ todo.authorization }}</p>
 >>>>>>> Share-todo
+=======
+        <p>( {{ todo.items.length }} items ) - Shared with : {{ todo.authorization }}</p>
+>>>>>>> ab3e53e8a37184360b6fd2ba570843ccd6121f2e
 
       </ion-item>
       <ion-item-options side="right">
@@ -29,6 +33,12 @@
   <ion-fab bottom right>
     <button ion-fab>
     <ion-icon name="brush"></ion-icon>
+<<<<<<< HEAD
+=======
+  </button>
+    <button ion-fab (click)="addTodo()">
+    <ion-icon name="add"></ion-icon>
+>>>>>>> ab3e53e8a37184360b6fd2ba570843ccd6121f2e
   </button>
     <button ion-fab (click)="addTodo()">
       <ion-icon name="add"></ion-icon>
