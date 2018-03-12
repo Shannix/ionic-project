@@ -24,7 +24,7 @@ export class TodoComponent {
   ngOnInit() {
     this.authFire.authState.subscribe(data => {
       if (data) {
-        this.email = data.email.replace(/\./g, '%'); alert(data.email);
+        this.email = data.email.replace(/\./g, '%');
         this.service.getTodosList(data.email.replace(/\./g, '%')).subscribe(list => {
           this.todosList = list;
           console.log("todolist", list);
