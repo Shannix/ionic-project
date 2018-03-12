@@ -32,15 +32,18 @@ export class TodoServiceProvider {
   public addItem(todoList: TodoList, newtodoItem: TodoItem) {
     this.DB.list(`${this.basePath}/${todoList.uuid}/items`).push(newtodoItem);
   }
+
   public updateAuthorization(todoList: TodoList, email: string) {
     todoList.authorization[email.replace(/\./g, '%')] = true;
     this.UpdateTodoList(todoList);
   }
+
   public UpdateTodoList(todoList: TodoList) {
     this.DB.list(this.basePath).update(
       todoList.uuid, todoList
     );
   }
+
   public UpdateTodoItem(todoList: TodoList, todoItem: TodoItem) {
     this.DB.list(`${this.basePath}/${todoList.uuid}/items`).update(
       todoItem.uuid, todoItem
@@ -56,7 +59,6 @@ export class TodoServiceProvider {
     promise.then(_ => console.log('success'))
       .catch(err => console.log(err, 'fail!'));
   }
-
 
   private test(todoList) {
     console.log(todoList);
