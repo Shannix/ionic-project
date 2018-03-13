@@ -7,7 +7,8 @@ import {
 } from 'ionic-angular';
 import { TodoItem, TodoList } from '../../models/model'
 import { Component } from '@angular/core';
-import { TodoServiceProvider } from '../../providers/todo-service/todo-service'
+import { TodoServiceProvider } from '../../providers/todo-service/todo-service';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @IonicPage()
 @Component({
@@ -23,7 +24,8 @@ export class SublistPage {
     public params: NavParams,
     public alertCtrl: AlertController,
     public navCtrl: NavController,
-    public popoverCtrl: PopoverController
+    public popoverCtrl: PopoverController,
+    public authFire: AngularFireAuth
   ) { }
 
   ngOnInit() {

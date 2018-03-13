@@ -12,9 +12,10 @@ export class TodoServiceProvider {
 
   constructor(public DB: AngularFireDatabase) { }
 
-  public getTodosList(): Observable<TodoList[]> {
+  public getTodosList(email: string): Observable<TodoList[]> {
     return this.todoListPresenter(
-      this.DB.list<TodoList>(this.basePath).snapshotChanges()
+      this.DB.list(this.basePath, ref => ref.orderByChild('authorization/' + email).equalTo(true))
+        .snapshotChanges());
     );
   }
 

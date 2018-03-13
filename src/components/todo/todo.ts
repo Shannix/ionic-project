@@ -3,6 +3,7 @@ import { TodoServiceProvider } from '../../providers/todo-service/todo-service'
 import { TodoList } from '../../models/model'
 import { ModalController, AlertController } from 'ionic-angular';
 import { SublistPage } from '../../pages/sublist/sublist';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Component({
   selector: 'todos-list',
@@ -10,17 +11,24 @@ import { SublistPage } from '../../pages/sublist/sublist';
 })
 export class TodoComponent {
   private todosList;
-
+  private email: string = "none";
   constructor(
     public modalCtrl: ModalController,
     public todoServiceProvider: TodoServiceProvider,
     public alertCtrl: AlertController,
-    public service: TodoServiceProvider
+    public service: TodoServiceProvider,
+    public authFire: AngularFireAuth
   ) { }
 
   ngOnInit() {
-    this.service.getTodosList().subscribe(list => {
-      this.todosList = list;
+    this.authFire.authState.subscribe(data => {
+      if (data) {
+        this.email = data.email.replace(/\./g, '%');
+        this.service.getTodosList(data.email.replace(/\./g, '%')).subscribe(list => {
+          this.todosList = list;
+          console.log("todolist", list);
+        });
+      }
     });
   }
 
