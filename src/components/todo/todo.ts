@@ -44,6 +44,7 @@ export class TodoComponent {
     const todo: TodoList = {
       uuid: null,
       name: name,
+      color: '#4267b2',
       items: [],
       image: null
     }
