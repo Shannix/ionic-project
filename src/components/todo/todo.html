@@ -6,7 +6,7 @@
           <img [src]="todo.image.urlLocation">
         </ion-thumbnail>
         <h2> {{ todo.name }} </h2>
-        <p>( {{ todo.items.length }} items )</p>
+        <p>( {{ todo.items.length }} items ) - Shared with : {{ todo.authorization }}</p>
 
       </ion-item>
       <ion-item-options side="right">

@@ -16,7 +16,6 @@ export class TodoServiceProvider {
     return this.todoListPresenter(
       this.DB.list(this.basePath, ref => ref.orderByChild('authorization/' + email).equalTo(true))
         .snapshotChanges());
-    );
   }
 
   public addTodoList(newTodoList: TodoList) {

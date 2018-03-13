@@ -47,7 +47,8 @@ export class TodoComponent {
       items: [],
       image: null
     }
-
+    todo.authorization = {};
+    todo.authorization[this.email] = true;
     return todo;
   }
 
@@ -72,6 +73,43 @@ export class TodoComponent {
           text: 'Save',
           handler: data => {
             this.service.addTodoList(this.newTodoList(data.name));
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
+  validateEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+  }
+
+  displayShareManager(todoList: TodoList) {
+    let prompt = this.alertCtrl.create({
+      title: 'Share this todo',
+      message: "Enter a valid email to share this todo",
+      inputs: [
+        {
+          name: 'name',
+          placeholder: 'new email'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Share',
+          handler: data => {
+            if (this.validateEmail(data.name)) {
+              this.service.updateAuthorization(todoList, data.name);
+            } else {
+              alert("Email invalid!")
+            }
           }
         }
       ]
