@@ -8,14 +8,13 @@ import 'rxjs/Rx';
 
 @Injectable()
 export class TodoServiceProvider {
-  private basePath: string = '/TodoList';
+  private basePath: string = '/todoList';
 
   constructor(public DB: AngularFireDatabase) { }
 
   public getTodosList(): Observable<TodoList[]> {
     return this.todoListPresenter(
-      this.DB.list<TodoList>(this.basePath).snapshotChanges()
-    );
+      this.DB.list(this.basePath).snapshotChanges());
   }
 
   public addTodoList(newTodoList: TodoList) {
@@ -30,13 +29,31 @@ export class TodoServiceProvider {
     this.DB.object(`${this.basePath}/${todoList.uuid}/image`).set(image);
   }
 
+  addAuthorisationToTodoList(todoList: TodoList, email: string) {
+    todoList.authorization[email.replace(/\./g, "%")] = email;
+
+    this.DB.object(
+      `${this.basePath}/${todoList.uuid}/authorization`
+    ).set(todoList.authorization);
+  }
+
+  public updateTodoList(todoList: TodoList) {
+    this.DB.list(this.basePath).update(
+      todoList.uuid, todoList
+    );
+  }
+
   public updateTodoItem(todoList: TodoList, todoItem: TodoItem) {
     this.DB.list(`${this.basePath}/${todoList.uuid}/items`).update(
       todoItem.uuid, todoItem
     );
   }
 
-  public updateTodosListPriority(todosList: TodoList[], indexes) {
+  public setTodoListColor(todoList: TodoList, color: string) {
+    this.DB.object(`${this.basePath}/${todoList.uuid}/color`).set(color);
+  }
+
+  public setTodosListPriority(todosList: TodoList[], indexes) {
     todosList = this.reoderList(todosList, indexes);
 
     for (let i = 0; i < todosList.length; i++) {
@@ -44,7 +61,7 @@ export class TodoServiceProvider {
     }
   }
 
-  public updateItemPriority(todoList: TodoList, indexes) {
+  public setItemPriority(todoList: TodoList, indexes) {
     let todoItems = todoList.items;
     todoItems = this.reoderList(todoItems, indexes);
 

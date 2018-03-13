@@ -1,15 +1,38 @@
 <ion-content>
   <ion-list reorder="true" (ionItemReorder)="reorderTodosList($event)">
     <ion-item-sliding *ngFor="let todo of getTodosList()">
-      <ion-item (click)="displayItemsMonitoring(todo)" [ngClass]="{'todo--completed': todoIsCompleted(todo)}">
+      <ion-item class="form" (click)="displayItemsMonitoring(todo)" [ngClass]="
+        { 'green': todoIsCompleted(todo),
+          'yellow': !todoIsCompleted(todo) && getColor(todo) === 'yellow',
+          'red': !todoIsCompleted(todo) && getColor(todo) === 'red',
+          'blue': !todoIsCompleted(todo) && getColor(todo) === 'blue',
+          'grey': !todoIsCompleted(todo) && getColor(todo) === 'grey'
+        }
+      ">
         <ion-thumbnail *ngIf="todo.image" item-start>
           <img [src]="todo.image.urlLocation">
         </ion-thumbnail>
         <h2> {{ todo.name }} </h2>
-        <p>( {{ todo.items.length }} items )</p>
-
+        <p>( {{ todo.items.length }} items ) - Shared with : {{ todo.authorization.length }} users</p>
       </ion-item>
+      <ion-item-options *ngIf="!todoIsCompleted(todo)" side="left">
+        <button ion-button expandable (click)="setColor(todo, 'grey')" class="white">
+          <ion-icon class="custom-icon color-grey" name="ios-egg"></ion-icon>
+        </button>
+        <button ion-button expandable (click)="setColor(todo, 'red')" class="white">
+          <ion-icon class="custom-icon color-red" name="ios-egg"></ion-icon>
+        </button>
+        <button ion-button expandable (click)="setColor(todo, 'yellow')" class="white">
+          <ion-icon class="custom-icon color-yellow" name="ios-egg"></ion-icon>
+        </button>
+        <button ion-button expandable (click)="setColor(todo, 'blue')" class="white">
+          <ion-icon class="custom-icon color-blue" name="ios-egg"></ion-icon>
+        </button>
+      </ion-item-options>
       <ion-item-options side="right">
+        <button ion-button expandable (click)="displayShareManager(todo)">
+          Share
+        </button>
         <button ion-button expandable (click)="deleteTodoList(todo)">
           Delete
         </button>

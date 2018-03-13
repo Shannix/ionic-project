@@ -3,6 +3,7 @@ import { TodoServiceProvider } from '../../providers/todo-service/todo-service'
 import { TodoList } from '../../models/model'
 import { ModalController, AlertController } from 'ionic-angular';
 import { SublistPage } from '../../pages/sublist/sublist';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Component({
   selector: 'todos-list',
@@ -10,12 +11,14 @@ import { SublistPage } from '../../pages/sublist/sublist';
 })
 export class TodoComponent {
   private todosList;
+  private email: string;
 
   constructor(
     public modalCtrl: ModalController,
     public todoServiceProvider: TodoServiceProvider,
     public alertCtrl: AlertController,
-    public service: TodoServiceProvider
+    public service: TodoServiceProvider,
+    public authFire: AngularFireAuth
   ) { }
 
   ngOnInit() {
@@ -23,6 +26,8 @@ export class TodoComponent {
   }
 
   subscribeToTodosList() {
+    this.authFire.authState.subscribe(data => { this.email = data.email; })
+
     this.service.getTodosList().subscribe(list => {
       this.todosList = list;
     });
@@ -37,12 +42,17 @@ export class TodoComponent {
   }
 
   newTodoList(name: string): TodoList {
+    const authorization = {};
+    authorization[this.email.replace(/\./g, "%")] = this.email;
+
     const todo: TodoList = {
       uuid: null,
       name: name,
+      color: 'grey',
       items: [],
       image: null,
-      priority: null
+      priority: null,
+      authorization: authorization
     }
 
     return todo;
@@ -76,7 +86,52 @@ export class TodoComponent {
     prompt.present();
   }
 
+  getColor(todo) {
+    return todo.color;
+  }
+  setColor(todo: TodoList, color: string) {
+    this.service.setTodoListColor(todo, color);
+  }
+
+  validateEmail(email) {
+    const regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return regex.test(email);
+  }
+
+  displayShareManager(todoList: TodoList) {
+    let prompt = this.alertCtrl.create({
+      title: 'Share this todo',
+      message: "Enter a valid email to share this todo",
+      inputs: [
+        {
+          name: 'name',
+          placeholder: 'new email'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Share',
+          handler: email => {
+            if (this.validateEmail(email.name)) {
+              this.service.addAuthorisationToTodoList(todoList, email.name);
+            } else {
+              alert("Email invalid!")
+            }
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
   displayItemsMonitoring(todoList: TodoList) {
+
     let todoModal = this.modalCtrl.create(
       SublistPage, { todoList: todoList }
     );
@@ -95,6 +150,6 @@ export class TodoComponent {
   }
 
   reorderTodosList(indexes) {
-    this.service.updateTodosListPriority(this.todosList, indexes);
+    this.service.setTodosListPriority(this.todosList, indexes);
   }
 }
