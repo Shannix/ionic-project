@@ -1,6 +1,7 @@
 export interface TodoList {
   uuid: string,
   name: string,
+  color: string,
   items: TodoItem[],
   image: ImageItem,
   authorization: string[]

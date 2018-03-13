@@ -30,6 +30,17 @@ export class TodoServiceProvider {
     this.DB.object(`${this.basePath}/${todoList.uuid}/image`).set(image);
   }
 
+  public updateAuthorization(todoList: TodoList, email: string) {
+    todoList.authorization[email.replace(/\./g, '%')] = true;
+    this.UpdateTodoList(todoList);
+  }
+
+  public UpdateTodoList(todoList: TodoList) {
+    this.DB.list(this.basePath).update(
+      todoList.uuid, todoList
+    );
+  }
+
   public updateTodoItem(todoList: TodoList, todoItem: TodoItem) {
     this.DB.list(`${this.basePath}/${todoList.uuid}/items`).update(
       todoItem.uuid, todoItem

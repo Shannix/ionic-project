@@ -33,8 +33,12 @@ export class SublistPage {
   }
 
   subscribeToList(todoList: TodoList) {
-    this.service.getTodosList().subscribe(list => {
-      this.todoList = list.find(todo => todo.uuid === this.todoList.uuid);
+    this.authFire.authState.subscribe(data => {
+      if (data) {
+        this.service.getTodosList(data.email.replace(/\./g, '%')).subscribe(list => {
+          this.todoList = list.find(todo => todo.uuid === this.todoList.uuid);
+        });
+      }
     });
   }
 
