@@ -11,7 +11,8 @@ export interface TodoItem {
   uuid: string,
   name: string,
   desc: string,
-  complete: boolean
+  complete: boolean,
+  expire: Date
 }
 
 export interface ImageItem {

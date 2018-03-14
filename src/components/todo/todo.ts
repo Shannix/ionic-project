@@ -44,9 +44,10 @@ export class TodoComponent {
     const todo: TodoList = {
       uuid: null,
       name: name,
-      color: '#4267b2',
+      color: '#dfe3ee',
       items: [],
-      image: null
+      image: null,
+      authorization: null
     }
     todo.authorization = {};
     todo.authorization[this.email] = true;
@@ -79,6 +80,11 @@ export class TodoComponent {
       ]
     });
     prompt.present();
+  }
+
+  addColor(todo: TodoList, color: string) {
+    todo.color = color;
+    this.service.UpdateTodoList(todo);
   }
 
   validateEmail(email) {

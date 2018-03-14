@@ -47,7 +47,8 @@ export class SublistPage {
       uuid: null,
       name: name,
       desc: desc,
-      complete: false
+      complete: false,
+      expire: new Date().toLocaleDateString()
     }
 
     return todoItem;
