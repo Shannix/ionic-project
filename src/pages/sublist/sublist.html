@@ -23,7 +23,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-  <ion-list>
+  <ion-list reorder="true" (ionItemReorder)="reorderItems($event)">
     <ion-item-sliding *ngFor="let item of getItems();">
       <ion-item>
         <ion-label>

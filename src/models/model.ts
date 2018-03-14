@@ -2,14 +2,16 @@ export interface TodoList {
   uuid: string,
   name: string,
   items: TodoItem[],
-  image: ImageItem
+  image: ImageItem,
+  priority: number
 }
 
 export interface TodoItem {
   uuid: string,
   name: string,
   desc: string,
-  complete: boolean
+  complete: boolean,
+  priority: number
 }
 
 export interface ImageItem {

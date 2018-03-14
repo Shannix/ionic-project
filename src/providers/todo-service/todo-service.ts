@@ -36,6 +36,20 @@ export class TodoServiceProvider {
     );
   }
 
+  public updateTodosListPriority(todoList: TodoList, priority: number) {
+    this.DB.object(`${this.basePath}/${todoList.uuid}/priority`).set(priority);
+  }
+
+  public updateItemPriority(
+    todoList: TodoList,
+    todoItem: TodoItem,
+    priority: number
+  ) {
+    this.DB.object(
+      `${this.basePath}/${todoList.uuid}/items/${todoItem.uuid}/priority`
+    ).set(priority);
+  }
+
   public deleteItem(todoList: TodoList, todoItem: TodoItem) {
     this.DB.list(`${this.basePath}/${todoList.uuid}/items`).remove(todoItem.uuid);
   }
@@ -61,25 +75,35 @@ export class TodoServiceProvider {
       });
   }
 
-  private todoListPresenter(todoList) {
-    return todoList.map(changes => {
-      return changes.map(c => ({
-        uuid: c.payload.key,
-        ...c.payload.val(),
-        items: this.itemsPresenter(c.payload.val().items)
-      }));
+  private orderByPriority(list: any[]): any[] {
+    return list.sort(function (listA, listB) {
+      return listA.priority - listB.priority;
     });
   }
 
-  public itemsPresenter(items) {
+  private todoListPresenter(todoList): Observable<TodoList[]>{
+    return todoList.map(changes => {
+      return this.orderByPriority(
+        changes.map(c => ({
+          uuid: c.payload.key,
+          ...c.payload.val(),
+          items: this.itemsPresenter(c.payload.val().items)
+        }))
+      )
+    })
+  }
+
+  private itemsPresenter(items): TodoItem[] {
     if (!items) { return []; }
 
-    return Object.keys(items).map(function(key) {
-      const item = items[key];
-      return {
-        uuid: key,
-        ...item
-      };
-    });
+    return this.orderByPriority(
+      Object.keys(items).map(function(key) {
+        const item = items[key];
+        return {
+          uuid: key,
+          ...item
+        };
+      })
+    );
   }
 }

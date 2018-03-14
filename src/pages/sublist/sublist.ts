@@ -41,7 +41,8 @@ export class SublistPage {
       uuid: null,
       name: name,
       desc: desc,
-      complete: false
+      complete: false,
+      priority: null
     }
 
     return todoItem;
@@ -139,10 +140,18 @@ export class SublistPage {
   }
 
   getItems(): TodoItem[] {
-    return this.todoList.items;
+    return this.todoList.items
   }
 
   getTodoList(): TodoList {
     return this.todoList;
   }
+
+  reorderItems(indexes) {
+    const fromElement = this.todoList.items[indexes.from];
+    const toElement = this.todoList.items[indexes.to];
+
+    this.service.updateItemPriority(this.todoList, fromElement, indexes.to);
+    this.service.updateItemPriority(this.todoList, toElement, indexes.from);
+   }
 }

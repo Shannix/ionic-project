@@ -19,6 +19,10 @@ export class TodoComponent {
   ) { }
 
   ngOnInit() {
+    this.subscribeToTodosList();
+  }
+
+  subscribeToTodosList() {
     this.service.getTodosList().subscribe(list => {
       this.todosList = list;
     });
@@ -37,7 +41,8 @@ export class TodoComponent {
       uuid: null,
       name: name,
       items: [],
-      image: null
+      image: null,
+      priority: null
     }
 
     return todo;
@@ -71,9 +76,7 @@ export class TodoComponent {
     prompt.present();
   }
 
-  displayItemsManager(todoList: TodoList) {
-    console.log(todoList);
-
+  displayItemsMonitoring(todoList: TodoList) {
     let todoModal = this.modalCtrl.create(
       SublistPage, { todoList: todoList }
     );
@@ -90,4 +93,12 @@ export class TodoComponent {
     let uncompleted = todo.items.find(item => item.complete === false);
     return !uncompleted;
   }
+
+  reorderTodosList(indexes) {
+    const fromElement = this.todosList[indexes.from];
+    const toElement = this.todosList[indexes.to];
+
+    this.service.updateTodosListPriority(fromElement, indexes.to);
+    this.service.updateTodosListPriority(toElement, indexes.from);
+   }
 }
