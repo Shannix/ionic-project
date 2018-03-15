@@ -49,7 +49,7 @@ export class TodoComponent {
       image: null,
       authorization: null
     }
-    todo.authorization = {};
+    todo.authorization = [];
     todo.authorization[this.email] = true;
     return todo;
   }
