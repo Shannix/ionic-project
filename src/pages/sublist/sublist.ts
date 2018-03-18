@@ -148,10 +148,6 @@ export class SublistPage {
   }
 
   reorderItems(indexes) {
-    const fromElement = this.todoList.items[indexes.from];
-    const toElement = this.todoList.items[indexes.to];
-
-    this.service.updateItemPriority(this.todoList, fromElement, indexes.to);
-    this.service.updateItemPriority(this.todoList, toElement, indexes.from);
-   }
+    this.service.updateItemPriority(this.todoList, indexes);
+  }
 }

@@ -95,10 +95,6 @@ export class TodoComponent {
   }
 
   reorderTodosList(indexes) {
-    const fromElement = this.todosList[indexes.from];
-    const toElement = this.todosList[indexes.to];
-
-    this.service.updateTodosListPriority(fromElement, indexes.to);
-    this.service.updateTodosListPriority(toElement, indexes.from);
-   }
+    this.service.updateTodosListPriority(this.todosList, indexes);
+  }
 }

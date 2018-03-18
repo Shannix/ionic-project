@@ -36,18 +36,23 @@ export class TodoServiceProvider {
     );
   }
 
-  public updateTodosListPriority(todoList: TodoList, priority: number) {
-    this.DB.object(`${this.basePath}/${todoList.uuid}/priority`).set(priority);
+  public updateTodosListPriority(todosList: TodoList[], indexes) {
+    todosList = this.reoderList(todosList, indexes);
+
+    for (let i = 0; i < todosList.length; i++) {
+      this.DB.object(`${this.basePath}/${todosList[i].uuid}/priority`).set(i);
+    }
   }
 
-  public updateItemPriority(
-    todoList: TodoList,
-    todoItem: TodoItem,
-    priority: number
-  ) {
-    this.DB.object(
-      `${this.basePath}/${todoList.uuid}/items/${todoItem.uuid}/priority`
-    ).set(priority);
+  public updateItemPriority(todoList: TodoList, indexes) {
+    let todoItems = todoList.items;
+    todoItems = this.reoderList(todoItems, indexes);
+
+    for (let i = 0; i < todoItems.length; i++) {
+      this.DB.object(
+        `${this.basePath}/${todoList.uuid}/items/${todoItems[i].uuid}/priority`
+      ).set(i);
+    }
   }
 
   public deleteItem(todoList: TodoList, todoItem: TodoItem) {
@@ -76,12 +81,12 @@ export class TodoServiceProvider {
   }
 
   private orderByPriority(list: any[]): any[] {
-    return list.sort(function (listA, listB) {
+    return list.sort(function(listA, listB) {
       return listA.priority - listB.priority;
     });
   }
 
-  private todoListPresenter(todoList): Observable<TodoList[]>{
+  private todoListPresenter(todoList): Observable<TodoList[]> {
     return todoList.map(changes => {
       return this.orderByPriority(
         changes.map(c => ({
@@ -105,5 +110,13 @@ export class TodoServiceProvider {
         };
       })
     );
+  }
+
+  private reoderList(list: any[], indexes): any[] {
+    let element = list[indexes.from];
+    list.splice(indexes.from, 1);
+    list.splice(indexes.to, 0, element);
+
+    return list;
   }
 }
