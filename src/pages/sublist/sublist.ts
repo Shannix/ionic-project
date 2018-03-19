@@ -18,6 +18,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 
 export class SublistPage {
   private todoList: TodoList;
+  private email: string;
 
   constructor(
     public service: TodoServiceProvider,
@@ -33,8 +34,12 @@ export class SublistPage {
   }
 
   subscribeToList(todoList: TodoList) {
-    this.service.getTodosList().subscribe(list => {
-      this.todoList = list.find(todo => todo.uuid === this.todoList.uuid);
+    this.authFire.authState.subscribe(data => {
+      this.service.getTodosList(data.email).subscribe(list => {
+        this.todoList = list.find(todo => todo.uuid === this.todoList.uuid);
+      });
+
+      this.email = data.email;
     });
   }
 

@@ -19,17 +19,20 @@ export class TodoComponent {
     public alertCtrl: AlertController,
     public service: TodoServiceProvider,
     public authFire: AngularFireAuth
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.subscribeToTodosList();
   }
 
   subscribeToTodosList() {
-    this.authFire.authState.subscribe(data => { this.email = data.email; })
+    this.authFire.authState.subscribe(data => {
+      this.service.getTodosList(data.email).subscribe(list => {
+        this.todosList = list;
+      });
 
-    this.service.getTodosList().subscribe(list => {
-      this.todosList = list;
+      this.email = data.email;
     });
   }
 

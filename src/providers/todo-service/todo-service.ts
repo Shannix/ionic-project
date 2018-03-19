@@ -8,13 +8,21 @@ import 'rxjs/Rx';
 
 @Injectable()
 export class TodoServiceProvider {
-  private basePath: string = '/todoList';
+  private basePath: string = '/todos';
 
   constructor(public DB: AngularFireDatabase) { }
 
-  public getTodosList(): Observable<TodoList[]> {
+  public getTodosList(email: string): Observable<TodoList[]> {
+    const emailFormated = this.emailToFirebaseFormat(email);
+
     return this.todoListPresenter(
-      this.DB.list(this.basePath).snapshotChanges());
+      this.DB.list(
+        this.basePath,
+        ref => ref.orderByChild(
+          `authorization/${emailFormated}`
+        ).equalTo(email)
+      ).snapshotChanges()
+    );
   }
 
   public addTodoList(newTodoList: TodoList) {
@@ -135,5 +143,9 @@ export class TodoServiceProvider {
     list.splice(indexes.to, 0, element);
 
     return list;
+  }
+
+  private emailToFirebaseFormat(email: string): string {
+    return email.replace(/\./g, "%");
   }
 }
