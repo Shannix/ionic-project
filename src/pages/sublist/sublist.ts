@@ -61,16 +61,15 @@ export class SublistPage {
     var date2 = new Date(date);
     var timeDiff = Math.abs(date2.getTime() - date1.getTime());
     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-    //alert(diffDays);
 
     if (diffDays > 7) return 1;
-    if (diffDays == 6) return 7;
-    if (diffDays == 5) return 15;
-    if (diffDays == 4) return 25;
-    if (diffDays == 3) return 50;
-    if (diffDays == 2) return 75;
-    if (diffDays == 1) return 90;
-    if (diffDays == 0) return 100;
+    if (diffDays == 6) return 10;
+    if (diffDays == 5) return 20;
+    if (diffDays == 4) return 40;
+    if (diffDays == 3) return 60;
+    if (diffDays == 2) return 80;
+    if (diffDays == 1) return 100;
+
   }
 
   goBack() {
@@ -135,6 +134,9 @@ export class SublistPage {
           name: 'desc',
           value: item.desc,
           placeholder: 'Write your description'
+        }, {
+          name: 'expire',
+          type: 'date'
         },
       ],
       buttons: [
@@ -149,6 +151,7 @@ export class SublistPage {
           handler: data => {
             item.name = data.name;
             item.desc = data.desc;
+            item.date = data.expire;
 
             this.service.updateTodoItem(this.todoList, item);
           }
