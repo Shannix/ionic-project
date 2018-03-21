@@ -13,7 +13,8 @@ export interface TodoItem {
   name: string,
   desc: string,
   complete: boolean,
-  priority: number
+  priority: number,
+  date: string
 }
 
 export interface ImageItem {

@@ -43,16 +43,34 @@ export class SublistPage {
     });
   }
 
-  newItem(name: string, desc: string): TodoItem {
+  newItem(name: string, desc: string, expire: string): TodoItem {
     const todoItem: TodoItem = {
       uuid: null,
       name: name,
       desc: desc,
       complete: false,
-      priority: null
+      priority: null,
+      date: expire
     }
 
     return todoItem;
+  }
+
+  getlimit(date: string) {
+    var date1 = new Date();
+    var date2 = new Date(date);
+    var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    //alert(diffDays);
+
+    if (diffDays > 7) return 1;
+    if (diffDays == 6) return 7;
+    if (diffDays == 5) return 15;
+    if (diffDays == 4) return 25;
+    if (diffDays == 3) return 50;
+    if (diffDays == 2) return 75;
+    if (diffDays == 1) return 90;
+    if (diffDays == 0) return 100;
   }
 
   goBack() {
@@ -80,6 +98,10 @@ export class SublistPage {
           type: 'text',
           placeholder: 'Write your description'
         },
+        {
+          name: 'expire',
+          type: 'date'
+        },
       ],
       buttons: [
         {
@@ -91,7 +113,7 @@ export class SublistPage {
         {
           text: 'Save',
           handler: data => {
-            this.service.addItem(this.todoList, this.newItem(data.name, data.desc));
+            this.service.addItem(this.todoList, this.newItem(data.name, data.desc, data.expire));
             this.subscribeToList(this.todoList);
           }
         }

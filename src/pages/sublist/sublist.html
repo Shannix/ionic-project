@@ -26,6 +26,7 @@
   <ion-list reorder="true" (ionItemReorder)="reorderItems($event)">
     <ion-item-sliding *ngFor="let item of getItems();">
       <ion-item>
+
         <ion-label *ngIf="item.complete==true" class="barre">
           {{ item.name }}
           <p>{{ item.desc }}</p>
@@ -33,12 +34,14 @@
         <ion-label *ngIf="item.complete==false">
           {{ item.name }}
           <p>{{ item.desc }}</p>
+          <p><progress class="avancement" value="{{getlimit(item.date)}}" max="100"></progress></p>
         </ion-label>
         <ion-checkbox [(ngModel)]="item.complete" (ionChange)="onToggleCompletedItem(item)">
         </ion-checkbox>
         <button (click)="editItem(item)" ion-button clear item-end>
           <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
         </button>
+
       </ion-item>
       <ion-item-options side="right">
         <button ion-button expandable (click)="deleteItem(item)">Delete</button>

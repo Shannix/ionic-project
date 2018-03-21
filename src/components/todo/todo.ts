@@ -31,7 +31,6 @@ export class TodoComponent {
       this.service.getTodosList(data.email).subscribe(list => {
         this.todosList = list;
       });
-
       this.email = data.email;
     });
   }
