@@ -9,6 +9,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
   selector: 'todos-list',
   templateUrl: 'todo.html'
 })
+
 export class TodoComponent {
   private todosList;
   private email: string;

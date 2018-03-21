@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { HomePage } from './home';
-import { TodoComponent } from '../../components/todo/todo';
+import { ComponentsModule } from '../../components/components.module';
 
 @NgModule({
   declarations: [
     HomePage
   ],
   imports: [
+    ComponentsModule,
     IonicPageModule.forChild(HomePage),
   ],
   exports: [
-    HomePage,
-    TodoComponent
+    HomePage
   ]
 })
 export class HomePageModule { }

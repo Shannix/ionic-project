@@ -9,5 +9,8 @@ import { AuthPage } from './auth';
   imports: [
     IonicPageModule.forChild(AuthPage),
   ],
+  exports: [
+    AuthPage
+  ]
 })
-export class AuthPageModule {}
+export class AuthPageModule { }

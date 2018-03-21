@@ -6,10 +6,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { FIREBASE_CONFIG } from './firebase.config';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
-import { AuthPage } from '../pages/auth/auth';
-import { SublistPage } from '../pages/sublist/sublist';
-import { ManageUsersPage } from '../pages/manage-users/manage-users';
+
+import { HomePageModule } from '../pages/home/home.module';
+import { AuthPageModule } from '../pages/auth/auth.module';
+import { SublistPageModule } from '../pages/sublist/sublist.module';
+import { ManageUsersPageModule } from '../pages/manage-users/manage-users.module';
+
 import { ComponentsModule } from '../components/components.module';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -25,11 +27,7 @@ import { TodoServiceProvider } from '../providers/todo-service/todo-service';
 
 @NgModule({
   declarations: [
-    MyApp,
-    HomePage,
-    AuthPage,
-    SublistPage,
-    ManageUsersPage
+    MyApp
   ],
   imports: [
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
@@ -37,16 +35,16 @@ import { TodoServiceProvider } from '../providers/todo-service/todo-service';
     AngularFireDatabaseModule,
     BrowserModule,
     ComponentsModule,
+    HomePageModule,
+    AuthPageModule,
+    SublistPageModule,
+    ManageUsersPageModule,
     HttpClientModule,
     IonicModule.forRoot(MyApp),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    HomePage,
-    AuthPage,
-    SublistPage,
-    ManageUsersPage
+    MyApp
   ],
   providers: [
     AuthServiceProvider,
