@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
-
+import { ProgressBarModule } from "angular-progress-bar";
 import { FIREBASE_CONFIG } from './firebase.config';
 
 import { MyApp } from './app.component';
@@ -38,6 +38,7 @@ import { ImageServiceProvider } from '../providers/image-service/image-service';
     AngularFireAuthModule,
     AngularFireDatabaseModule,
     HttpClientModule,
+    ProgressBarModule,
     IonicModule.forRoot(MyApp),
   ],
   bootstrap: [IonicApp],
