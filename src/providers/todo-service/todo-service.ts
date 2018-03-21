@@ -37,6 +37,10 @@ export class TodoServiceProvider {
     this.DB.object(`${this.basePath}/${todoList.uuid}/image`).set(image);
   }
 
+  public addImageToItem(todoList: TodoList, item: TodoItem, image: ImageItem) {
+    this.DB.object(`${this.basePath}/${todoList.uuid}/items/${item.uuid}/image`).set(image);
+  }
+
   addAuthorisationToTodoList(todoList: TodoList, email: string) {
     todoList.authorization[email.replace(/\./g, "%")] = email;
 

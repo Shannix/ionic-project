@@ -40,7 +40,7 @@ export class TodoComponent {
     return this.todosList;
   }
 
-  deleteTodoList(todo: todoList) {
+  deleteTodoList(todo: TodoList) {
     let alert = this.alertCtrl.create({
       title: todo.name,
       message: "Do you want to delete this todo ?",

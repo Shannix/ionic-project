@@ -60,7 +60,7 @@ export class SublistPage {
   }
 
   presentSubMenu() {
-    //<upload-images [item]="getTodoList()"></upload-images>
+    //<upload-images [todoList]="getTodoList()"></upload-images>
 
     let popover = this.popoverCtrl.create("");
     popover.present();

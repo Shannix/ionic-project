@@ -1,6 +1,6 @@
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Component, Input } from '@angular/core';
-import { TodoList, ImageItem } from '../../models/model'
+import { ImageItem, TodoItem, TodoList } from '../../models/model'
 import { storage } from 'firebase';
 import { TodoServiceProvider } from '../../providers/todo-service/todo-service'
 
@@ -10,7 +10,8 @@ import { TodoServiceProvider } from '../../providers/todo-service/todo-service'
 })
 export class UploadImagesComponent {
 
-  @Input() item: TodoList;
+  @Input() item: TodoItem;
+  @Input() todoList: TodoList;
   @Input() imageTitle: string = "no_name";
 
   constructor(
@@ -44,19 +45,29 @@ export class UploadImagesComponent {
 
       const image = `data:image/jpeg;base64,${result}`;
 
-      const bucketLocation = `pictures/${this.item.uuid}/${this.imageTitle}`;
-
-      const pictures = storage().ref(bucketLocation);
-
-      let url;
-      await pictures.putString(image, 'data_url').then(function(snapshot) {
-        url = snapshot.downloadURL;
-      });
-
-      this.service.addImageToTodoList(
-        this.item,
-        this.newImage(this.imageTitle, bucketLocation, url)
-      );
+      if (!this.item) {
+        let bucketLocation = `pictures/${this.todoList.uuid}/${this.imageTitle}`;
+        const pictures = storage().ref(bucketLocation);
+        let url;
+        await pictures.putString(image, 'data_url').then(function(snapshot) {
+          url = snapshot.downloadURL;
+        });
+        this.service.addImageToTodoList(
+          this.todoList,
+          this.newImage(this.imageTitle, bucketLocation, url)
+        );
+      } else {
+        let bucketLocation = `pictures/${this.todoList.uuid}/${this.item.uuid}/${this.imageTitle}`;
+        const pictures = storage().ref(bucketLocation);
+        let url;
+        await pictures.putString(image, 'data_url').then(function(snapshot) {
+          url = snapshot.downloadURL;
+        }); this.service.addImageToItem(
+          this.todoList,
+          this.item,
+          this.newImage(this.imageTitle, bucketLocation, url)
+        );
+      }
     } catch (e) {
       console.error(e);
     }
