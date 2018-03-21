@@ -40,8 +40,27 @@ export class TodoComponent {
     return this.todosList;
   }
 
-  deleteTodoList(todo: TodoList) {
-    this.service.deleteTodoList(todo);
+  deleteTodoList(todo: todoList) {
+    let alert = this.alertCtrl.create({
+      title: todo.name,
+      message: "Do you want to delete this todo ?",
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Accept',
+          handler: () => {
+            this.service.deleteTodoList(todo);
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   newTodoList(name: string): TodoList {
