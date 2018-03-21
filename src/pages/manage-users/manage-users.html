@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-navbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col col-3>
+          <button ion-button item-start (click)="goBack()">
+              <i class="fa fa-chevron-left" aria-hidden="true">Back</i>
+            </button>
+        </ion-col>
+        <ion-col col-9>
+          <ion-title>Manage sharing users</ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <ion-list *ngFor="let user of getUsersEmail()">
+    <ion-item>
+      <ion-label class="barre">
+        {{ user }}
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

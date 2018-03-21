@@ -3,8 +3,10 @@ import {
   IonicPage,
   NavController,
   NavParams,
-  PopoverController
+  PopoverController,
+  ModalController
 } from 'ionic-angular';
+import { ManageUsersPage } from '../../pages/manage-users/manage-users'
 import { TodoItem, TodoList } from '../../models/model'
 import { Component } from '@angular/core';
 import { TodoServiceProvider } from '../../providers/todo-service/todo-service';
@@ -26,7 +28,8 @@ export class SublistPage {
     public alertCtrl: AlertController,
     public navCtrl: NavController,
     public popoverCtrl: PopoverController,
-    public authFire: AngularFireAuth
+    public authFire: AngularFireAuth,
+    public modalCtrl: ModalController
   ) { }
 
   ngOnInit() {
@@ -59,11 +62,9 @@ export class SublistPage {
     this.navCtrl.pop();
   }
 
-  presentSubMenu() {
-    //<upload-images [todoList]="getTodoList()"></upload-images>
-
-    let popover = this.popoverCtrl.create("");
-    popover.present();
+  manageUser() {
+    let profileModal = this.modalCtrl.create(ManageUsersPage, { todoList: this.todoList });
+    profileModal.present();
   }
 
   addItem() {

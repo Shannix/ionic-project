@@ -9,6 +9,7 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { AuthPage } from '../pages/auth/auth';
 import { SublistPage } from '../pages/sublist/sublist';
+import { ManageUsersPage } from '../pages/manage-users/manage-users';
 import { ComponentsModule } from '../components/components.module';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -28,6 +29,7 @@ import { TodoServiceProvider } from '../providers/todo-service/todo-service';
     HomePage,
     AuthPage,
     SublistPage,
+    ManageUsersPage
   ],
   imports: [
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
@@ -43,7 +45,8 @@ import { TodoServiceProvider } from '../providers/todo-service/todo-service';
     MyApp,
     HomePage,
     AuthPage,
-    SublistPage
+    SublistPage,
+    ManageUsersPage
   ],
   providers: [
     AuthServiceProvider,

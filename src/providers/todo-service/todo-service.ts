@@ -37,10 +37,6 @@ export class TodoServiceProvider {
     this.DB.object(`${this.basePath}/${todoList.uuid}/image`).set(image);
   }
 
-  public addImageToItem(todoList: TodoList, item: TodoItem, image: ImageItem) {
-    this.DB.object(`${this.basePath}/${todoList.uuid}/items/${item.uuid}/image`).set(image);
-  }
-
   addAuthorisationToTodoList(todoList: TodoList, email: string) {
     todoList.authorization[email.replace(/\./g, "%")] = email;
 
@@ -95,6 +91,11 @@ export class TodoServiceProvider {
 
     //Remove image from firebase bucket
     todo.image && this.deleteImageIntoBucket(todo.image);
+  }
+
+  public deleteImage(todo: TodoList) {
+    this.DB.object(`${this.basePath}/${todo.uuid}/image`).remove();
+    this.deleteImageIntoBucket(todo.image);
   }
 
   private deleteImageIntoBucket(image: ImageItem) {

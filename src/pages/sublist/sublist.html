@@ -13,16 +13,30 @@
           </ion-title>
         </ion-col>
         <ion-col col-3>
-          <upload-images icon-only float-right [todoList]="getTodoList()"></upload-images>
-          <!--<button ion-button icon-only float-right (click)="presentSubMenu()">
-            <ion-icon name="more"></ion-icon>
-          </button>-->
+          <button ion-button icon-only float-right (click)="manageUser()">
+            <ion-icon name="people"></ion-icon>
+          </button>
         </ion-col>
       </ion-row>
     </ion-grid>
   </ion-navbar>
 </ion-header>
 <ion-content padding>
+  <upload-images #upImg *ngIf="getTodoList().image" [todoList]="getTodoList()">
+    <ion-thumbnail (click)="upImg.takePhoto()">
+      <button ion-button float-right clear (click)="upImg.removePhoto()">
+        <ion-icon  name="md-close-circle"></ion-icon>
+      </button>
+      <img [src]="getTodoList().image.urlLocation">
+    </ion-thumbnail>
+  </upload-images>
+
+  <upload-images #upImg *ngIf="!getTodoList().image" text-center center [todoList]="getTodoList()">
+    <button (click)="upImg.takePhoto()" ion-button>
+      <i class="fa far fa-image"></i>
+    </button>
+  </upload-images>
+
   <ion-list reorder="true" (ionItemReorder)="reorderItems($event)">
     <ion-item-sliding *ngFor="let item of getItems();">
       <ion-item>

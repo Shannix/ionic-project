@@ -8,6 +8,7 @@ import { TodoServiceProvider } from '../../providers/todo-service/todo-service'
   selector: 'upload-images',
   templateUrl: 'upload-images.html'
 })
+
 export class UploadImagesComponent {
 
   @Input() item: TodoItem;
@@ -29,6 +30,10 @@ export class UploadImagesComponent {
     return image;
   }
 
+  deleteImage() {
+    this.service.deleteImage(this.todoList);
+  }
+
   async takePhoto() {
     try {
       const options: CameraOptions = {
@@ -45,30 +50,21 @@ export class UploadImagesComponent {
 
       const image = `data:image/jpeg;base64,${result}`;
 
-      if (!this.item) {
-        let bucketLocation = `pictures/${this.todoList.uuid}/${this.imageTitle}`;
-        const pictures = storage().ref(bucketLocation);
-        let url;
-        await pictures.putString(image, 'data_url').then(function(snapshot) {
-          url = snapshot.downloadURL;
-        });
-        this.service.addImageToTodoList(
-          this.todoList,
-          this.newImage(this.imageTitle, bucketLocation, url)
-        );
-      } else {
-        let bucketLocation = `pictures/${this.todoList.uuid}/${this.item.uuid}/${this.imageTitle}`;
-        const pictures = storage().ref(bucketLocation);
-        let url;
-        await pictures.putString(image, 'data_url').then(function(snapshot) {
-          url = snapshot.downloadURL;
-        }); this.service.addImageToItem(
-          this.todoList,
-          this.item,
-          this.newImage(this.imageTitle, bucketLocation, url)
-        );
-      }
-    } catch (e) {
+      let bucketLocation = `pictures/${this.todoList.uuid}/${this.imageTitle}`;
+
+      const pictures = storage().ref(bucketLocation);
+
+      let url;
+      await pictures.putString(image, 'data_url').then(function(snapshot) {
+        url = snapshot.downloadURL;
+      });
+
+      this.service.addImageToTodoList(
+        this.todoList,
+        this.newImage(this.imageTitle, bucketLocation, url)
+      );
+    }
+    catch (e) {
       console.error(e);
     }
   }
