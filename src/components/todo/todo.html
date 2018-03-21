@@ -13,7 +13,7 @@
           <img [src]="todo.image.urlLocation">
         </ion-thumbnail>
         <h2> {{ todo.name }} </h2>
-        <p>( {{ todo.items.length }} items ) - Shared with : {{ todo.authorization.length }} users</p>
+        <p>( {{ countItemsChecked(todo) }}/{{todo.items.length }} items) - Shared with : {{ countSharedUsers(todo) }} users</p>
       </ion-item>
       <ion-item-options *ngIf="!todoIsCompleted(todo)" side="left">
         <button ion-button expandable (click)="setColor(todo, 'grey')" class="white">

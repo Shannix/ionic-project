@@ -155,4 +155,12 @@ export class TodoComponent {
   reorderTodosList(indexes) {
     this.service.setTodosListPriority(this.todosList, indexes);
   }
+
+  countSharedUsers(todo: TodoList) {
+    return Object.keys(todo.authorization).length;
+  }
+
+  countItemsChecked(todo: TodoList) {
+    return todo.items.filter(item => item.complete === true).length;
+  }
 }
