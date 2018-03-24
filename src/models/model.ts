@@ -3,7 +3,7 @@ export interface TodoList {
   name: string,
   color: string,
   items: TodoItem[],
-  image: ImageItem,
+  images: ImageItem[],
   priority: number,
   authorization: {}
 }
@@ -17,6 +17,7 @@ export interface TodoItem {
 }
 
 export interface ImageItem {
+  uuid: string,
   bucketLocation: string,
   urlLocation: string,
   title: string

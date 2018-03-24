@@ -73,7 +73,7 @@ export class TodoComponent {
       name: name,
       color: 'grey',
       items: [],
-      image: null,
+      images: [],
       priority: null,
       authorization: authorization
     }

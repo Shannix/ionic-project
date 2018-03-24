@@ -13,7 +13,8 @@ export class UploadImagesComponent {
 
   @Input() item: TodoItem;
   @Input() todoList: TodoList;
-  @Input() imageTitle: string = "no_name";
+  @Input() imageTitle: string =
+  Math.floor(Math.random() * Math.floor(10000)).toString();
 
   constructor(
     private camera: Camera,
@@ -22,16 +23,13 @@ export class UploadImagesComponent {
 
   newImage(title, bucketLocation, urlLocation): ImageItem {
     const image: ImageItem = {
+      uuid: null,
       bucketLocation: bucketLocation,
       urlLocation: urlLocation,
       title: title,
     };
 
     return image;
-  }
-
-  deleteImage() {
-    this.service.deleteImage(this.todoList);
   }
 
   async takePhoto() {

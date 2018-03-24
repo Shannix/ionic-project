@@ -7,7 +7,7 @@ import {
   ModalController
 } from 'ionic-angular';
 import { ManageUsersPage } from '../../pages/manage-users/manage-users'
-import { TodoItem, TodoList } from '../../models/model'
+import { TodoItem, TodoList, ImageItem } from '../../models/model'
 import { Component } from '@angular/core';
 import { TodoServiceProvider } from '../../providers/todo-service/todo-service';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -20,7 +20,6 @@ import { AngularFireAuth } from 'angularfire2/auth';
 
 export class SublistPage {
   private todoList: TodoList;
-  private email: string;
 
   constructor(
     public service: TodoServiceProvider,
@@ -41,8 +40,6 @@ export class SublistPage {
       this.service.getTodosList(data.email).subscribe(list => {
         this.todoList = list.find(todo => todo.uuid === this.todoList.uuid);
       });
-
-      this.email = data.email;
     });
   }
 
@@ -157,5 +154,10 @@ export class SublistPage {
 
   reorderItems(indexes) {
     this.service.setItemPriority(this.todoList, indexes);
+  }
+
+  removePhoto(image: ImageItem) {
+    this.service.deleteImage(this.todoList, image);
+    this.subscribeToList(this.todoList);
   }
 }

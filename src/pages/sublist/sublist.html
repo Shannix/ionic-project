@@ -22,21 +22,21 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-  <upload-images #upImg *ngIf="getTodoList().image" [todoList]="getTodoList()">
-    <ion-thumbnail (click)="upImg.takePhoto()">
-      <button ion-button float-right clear (click)="upImg.removePhoto()">
-        <ion-icon  name="md-close-circle"></ion-icon>
-      </button>
-      <img [src]="getTodoList().image.urlLocation">
-    </ion-thumbnail>
-  </upload-images>
-
-  <upload-images #upImg *ngIf="!getTodoList().image" text-center center [todoList]="getTodoList()">
-    <button (click)="upImg.takePhoto()" ion-button>
+  <upload-images #upImg [todoList]="getTodoList()">
+    <button (click)="upImg.takePhoto() && subscribeToList(getTodoList())" ion-button>
       <i class="fa far fa-image"></i>
     </button>
+    <ion-list>
+      <ion-item *ngFor="let image of getTodoList().images">
+        <button ion-button float-right (click)="removePhoto(image)">
+          <ion-icon  name="md-close-circle"></ion-icon>
+        </button>
+        <ion-thumbnail>
+          <img [src]="image.urlLocation">
+        </ion-thumbnail>
+      </ion-item>
+    </ion-list>
   </upload-images>
-
   <ion-list reorder="true" (ionItemReorder)="reorderItems($event)">
     <ion-item-sliding *ngFor="let item of getItems();">
       <ion-item>

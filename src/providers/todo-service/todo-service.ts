@@ -34,7 +34,7 @@ export class TodoServiceProvider {
   }
 
   public addImageToTodoList(todoList: TodoList, image: ImageItem) {
-    this.DB.object(`${this.basePath}/${todoList.uuid}/image`).set(image);
+    this.DB.list(`${this.basePath}/${todoList.uuid}/images`).push(image);
   }
 
   addAuthorisationToTodoList(todoList: TodoList, email: string) {
@@ -90,12 +90,12 @@ export class TodoServiceProvider {
       .catch(err => console.log(err, 'fail!'));
 
     //Remove image from firebase bucket
-    todo.image && this.deleteImageIntoBucket(todo.image);
+    todo.images && todo.images.forEach(image => this.deleteImageIntoBucket(image));
   }
 
-  public deleteImage(todo: TodoList) {
-    this.DB.object(`${this.basePath}/${todo.uuid}/image`).remove();
-    this.deleteImageIntoBucket(todo.image);
+  public deleteImage(todo: TodoList, image: ImageItem) {
+    this.DB.object(`${this.basePath}/${todo.uuid}/images/${image.uuid}`).remove();
+    this.deleteImageIntoBucket(image);
   }
 
   private deleteImageIntoBucket(image: ImageItem) {
@@ -122,10 +122,24 @@ export class TodoServiceProvider {
         changes.map(c => ({
           uuid: c.payload.key,
           ...c.payload.val(),
-          items: this.itemsPresenter(c.payload.val().items)
+          items: this.itemsPresenter(c.payload.val().items),
+          images: this.imagesPresenter(c.payload.val().images)
         }))
       )
     })
+  }
+  private imagesPresenter(images): TodoItem[] {
+    if (!images) { return []; }
+
+    return this.orderByPriority(
+      Object.keys(images).map(function(key) {
+        const image = images[key];
+        return {
+          uuid: key,
+          ...image
+        };
+      })
+    );
   }
 
   private itemsPresenter(items): TodoItem[] {
