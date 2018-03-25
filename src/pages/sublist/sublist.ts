@@ -64,9 +64,9 @@ export class SublistPage {
     var timeDiffCrExp = Math.abs(dateExpire.getTime() - dateCreate.getTime());
     var diffDaysBetweenCrExp = Math.ceil(timeDiffCrExp / (1000 * 3600 * 24));
     var timeDiffTodayExp = Math.abs(dateCreate.getTime() - dateToday.getTime());
-    var diffDaysToExpire = Math.ceil(timeDiffTodayExp / (1000 * 3600 * 24)) - 1;
+    var diffDaysToExpire = Math.ceil(timeDiffTodayExp / (1000 * 3600 * 24));
 
-    return ((diffDaysToExpire * 100) / diffDaysBetweenCrExp) | 0;
+    return ((diffDaysToExpire * 100) / (diffDaysBetweenCrExp)) >> 0;
   }
 
   goBack() {
