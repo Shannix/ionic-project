@@ -1,7 +1,11 @@
+import {
+  ModalController,
+  AlertController,
+  ToastController
+} from 'ionic-angular';
 import { Component } from '@angular/core';
-import { TodoServiceProvider } from '../../providers/todo-service/todo-service'
-import { TodoList } from '../../models/model'
-import { ModalController, AlertController } from 'ionic-angular';
+import { TodoServiceProvider } from '../../providers/todo-service/todo-service';
+import { TodoList } from '../../models/model';
 import { SublistPage } from '../../pages/sublist/sublist';
 import { AngularFireAuth } from 'angularfire2/auth';
 
@@ -19,7 +23,8 @@ export class TodoComponent {
     public todoServiceProvider: TodoServiceProvider,
     public alertCtrl: AlertController,
     public service: TodoServiceProvider,
-    public authFire: AngularFireAuth
+    public authFire: AngularFireAuth,
+    private toastCtrl: ToastController
   ) {
   }
 
@@ -121,6 +126,20 @@ export class TodoComponent {
     return regex.test(email);
   }
 
+  displayToast(message) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: 'top'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
+  }
+
   displayShareManager(todoList: TodoList) {
     let prompt = this.alertCtrl.create({
       title: 'Share this todo',
@@ -141,10 +160,11 @@ export class TodoComponent {
         {
           text: 'Share',
           handler: email => {
-            if (this.validateEmail(email.name)) {
-              this.service.addAuthorisationToTodoList(todoList, email.name);
+            const mail = email.name.trim();
+            if (this.validateEmail(mail)) {
+              this.service.addAuthorisationToTodoList(todoList, mail);
             } else {
-              alert("Email invalid!")
+              this.displayToast(`${mail} is incorrect`);
             }
           }
         }
