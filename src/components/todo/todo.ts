@@ -34,11 +34,13 @@ export class TodoComponent {
 
   subscribeToTodosList() {
     this.authFire.authState.subscribe(data => {
-      this.service.getTodosList(data.email).subscribe(list => {
-        this.todosList = list;
-      });
+      if (data) {
+        this.service.getTodosList(data.email).subscribe(list => {
+          this.todosList = list;
+        });
 
-      this.email = data.email;
+        this.email = data.email;
+      }
     });
   }
 
@@ -80,7 +82,8 @@ export class TodoComponent {
       items: [],
       images: [],
       priority: null,
-      authorization: authorization
+      authorization: authorization,
+      note: null
     }
 
     return todo;
@@ -163,6 +166,7 @@ export class TodoComponent {
             const mail = email.name.trim();
             if (this.validateEmail(mail)) {
               this.service.addAuthorisationToTodoList(todoList, mail);
+              this.displayToast(`Shared with ${mail}`);
             } else {
               this.displayToast(`${mail} is incorrect`);
             }

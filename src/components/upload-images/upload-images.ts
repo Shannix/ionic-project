@@ -32,6 +32,10 @@ export class UploadImagesComponent {
     return image;
   }
 
+  removePhoto(image: ImageItem) {
+    this.service.deleteImage(this.todoList, image);
+  }
+
   async takePhoto() {
     try {
       const options: CameraOptions = {

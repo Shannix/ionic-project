@@ -7,7 +7,7 @@ import {
   ModalController
 } from 'ionic-angular';
 import { ManageUsersPage } from '../../pages/manage-users/manage-users'
-import { TodoItem, TodoList, ImageItem } from '../../models/model'
+import { TodoItem, TodoList } from '../../models/model'
 import { Component } from '@angular/core';
 import { TodoServiceProvider } from '../../providers/todo-service/todo-service';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -32,7 +32,9 @@ export class SublistPage {
   ) { }
 
   ngOnInit() {
-    this.todoList = this.params.get('todoList');
+    const todo = this.params.get('todoList');
+    this.todoList = todo;
+    this.subscribeToList(todo);
   }
 
   subscribeToList(todoList: TodoList) {
@@ -108,7 +110,6 @@ export class SublistPage {
           text: 'Save',
           handler: data => {
             this.service.addItem(this.todoList, this.newItem(data.name, data.desc, data.expire));
-            this.subscribeToList(this.todoList);
           }
         }
       ]
@@ -163,7 +164,6 @@ export class SublistPage {
 
   deleteItem(item: TodoItem) {
     this.service.deleteItem(this.todoList, item);
-    this.subscribeToList(this.todoList);
   }
 
   getItems(): TodoItem[] {
@@ -178,8 +178,7 @@ export class SublistPage {
     this.service.setItemPriority(this.todoList, indexes);
   }
 
-  removePhoto(image: ImageItem) {
-    this.service.deleteImage(this.todoList, image);
-    this.subscribeToList(this.todoList);
+  setNote(text) {
+    this.service.setNote(this.todoList, text);
   }
 }

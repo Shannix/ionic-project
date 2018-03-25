@@ -5,7 +5,8 @@ export interface TodoList {
   items: TodoItem[],
   images: ImageItem[],
   priority: number,
-  authorization: {}
+  authorization: {},
+  note: string
 }
 
 export interface TodoItem {
