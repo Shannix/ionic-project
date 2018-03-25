@@ -1,4 +1,6 @@
 page-sublist {
 .barre { text-decoration: line-through; color: #888888; }
-.avancement{ width: 100%; }
+.avancement{ width: 100%;   }
+progress::-webkit-progress-value { background: #ff6666; }
+progress::-moz-progress-bar { background: #ff6666; }
 }
