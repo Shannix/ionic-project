@@ -43,16 +43,30 @@ export class SublistPage {
     });
   }
 
-  newItem(name: string, desc: string): TodoItem {
+  newItem(name: string, desc: string, expire: string): TodoItem {
     const todoItem: TodoItem = {
       uuid: null,
       name: name,
       desc: desc,
       complete: false,
-      priority: null
+      priority: null,
+      dateCreate: new Date().toString(),
+      dateExpire: expire
     }
 
     return todoItem;
+  }
+
+  getlimit(dateCr: string, dateExp: string) {
+    var dateToday = new Date();
+    var dateCreate = new Date(dateCr);
+    var dateExpire = new Date(dateExp);
+    var timeDiffCrExp = Math.abs(dateExpire.getTime() - dateCreate.getTime());
+    var diffDaysBetweenCrExp = Math.ceil(timeDiffCrExp / (1000 * 3600 * 24));
+    var timeDiffTodayExp = Math.abs(dateCreate.getTime() - dateToday.getTime());
+    var diffDaysToExpire = Math.ceil(timeDiffTodayExp / (1000 * 3600 * 24));
+
+    return ((diffDaysToExpire * 100) / diffDaysBetweenCrExp) | 0;
   }
 
   goBack() {
@@ -78,6 +92,10 @@ export class SublistPage {
           type: 'text',
           placeholder: 'Write your description'
         },
+        {
+          name: 'expire',
+          type: 'date'
+        },
       ],
       buttons: [
         {
@@ -89,7 +107,7 @@ export class SublistPage {
         {
           text: 'Save',
           handler: data => {
-            this.service.addItem(this.todoList, this.newItem(data.name, data.desc));
+            this.service.addItem(this.todoList, this.newItem(data.name, data.desc, data.expire));
             this.subscribeToList(this.todoList);
           }
         }
@@ -112,6 +130,10 @@ export class SublistPage {
           value: item.desc,
           placeholder: 'Write your description'
         },
+        {
+          name: 'expire',
+          type: 'date'
+        },
       ],
       buttons: [
         {
@@ -125,7 +147,7 @@ export class SublistPage {
           handler: data => {
             item.name = data.name;
             item.desc = data.desc;
-
+            item.dateExpire = data.expire;
             this.service.updateTodoItem(this.todoList, item);
           }
         }

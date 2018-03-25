@@ -13,7 +13,9 @@ export interface TodoItem {
   name: string,
   desc: string,
   complete: boolean,
-  priority: number
+  priority: number,
+  dateCreate: string,
+  dateExpire: string
 }
 
 export interface ImageItem {

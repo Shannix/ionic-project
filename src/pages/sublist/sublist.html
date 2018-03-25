@@ -47,6 +47,7 @@
         <ion-label *ngIf="item.complete==false">
           {{ item.name }}
           <p>{{ item.desc }}</p>
+          <p><progress class="avancement" value="{{getlimit(item.dateCreate , item.dateExpire)}}" max="100"></progress></p>
         </ion-label>
         <ion-checkbox [(ngModel)]="item.complete" (ionChange)="onToggleCompletedItem(item)">
         </ion-checkbox>

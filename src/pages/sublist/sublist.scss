@@ -3,8 +3,8 @@ page-sublist {
     text-decoration: line-through;
     color: #888888;
   }
-}
-
-.upload-image {
-  text-align: center;
+.avancement{ width: 100%;   }
+progress::-webkit-progress-value { background: #ff6666; }
+progress::-moz-progress-bar { background: #ff6666; }
+.upload-image {text-align: center;}
 }
