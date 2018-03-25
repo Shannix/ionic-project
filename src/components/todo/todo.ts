@@ -82,7 +82,8 @@ export class TodoComponent {
       items: [],
       images: [],
       priority: null,
-      authorization: authorization
+      authorization: authorization,
+      note: null
     }
 
     return todo;

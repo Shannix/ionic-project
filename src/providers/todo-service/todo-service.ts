@@ -61,6 +61,10 @@ export class TodoServiceProvider {
     this.DB.object(`${this.basePath}/${todoList.uuid}/color`).set(color);
   }
 
+  public setNote(todoList: TodoList, note: string) {
+    this.DB.object(`${this.basePath}/${todoList.uuid}/note`).set(note);
+  }
+
   public setTodosListPriority(todosList: TodoList[], indexes) {
     todosList = this.reoderList(todosList, indexes);
 
