@@ -59,16 +59,20 @@ export class SublistPage {
     return todoItem;
   }
 
-  getlimit(dateCr: string, dateExp: string) {
-    var dateToday = new Date();
-    var dateCreate = new Date(dateCr);
-    var dateExpire = new Date(dateExp);
-    var timeDiffCrExp = Math.abs(dateExpire.getTime() - dateCreate.getTime());
-    var diffDaysBetweenCrExp = Math.ceil(timeDiffCrExp / (1000 * 3600 * 24));
-    var timeDiffTodayExp = Math.abs(dateCreate.getTime() - dateToday.getTime());
-    var diffDaysToExpire = Math.ceil(timeDiffTodayExp / (1000 * 3600 * 24));
+  getTimeUsed(item: TodoItem): number {
+    const dateToday = new Date().getTime();
+    const dateCreate = new Date(item.dateCreate).getTime();
+    const dateExpire = new Date(item.dateExpire).getTime();
 
-    return ((diffDaysToExpire * 100) / (diffDaysBetweenCrExp)) >> 0;
+    const givenTime = Math.ceil((dateExpire - dateCreate) / 86400000);
+    const leftTime = Math.ceil((dateExpire - dateToday) / 86400000);
+    const timeUsed = givenTime - leftTime;
+
+    if (givenTime <= 0 || leftTime <= 0) {
+      return 100;
+    } else {
+      return (timeUsed / givenTime) * 100 << 0;
+    }
   }
 
   goBack() {
@@ -133,6 +137,7 @@ export class SublistPage {
         },
         {
           name: 'expire',
+          value: item.dateExpire,
           type: 'date'
         },
       ],

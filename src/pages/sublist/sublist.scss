@@ -3,8 +3,42 @@ page-sublist {
     text-decoration: line-through;
     color: #888888;
   }
-.avancement{ width: 100%;   }
-progress::-webkit-progress-value { background: #ff6666; }
-progress::-moz-progress-bar { background: #ff6666; }
-.upload-image {text-align: center;}
+
+  .upload-image {
+    text-align: center;
+  }
+
+  meter {
+    /* For Firefox */
+    background: #EEE;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.2) inset;
+    border-radius: 3px;
+    width: 100%;
+  }
+
+  progress:before {
+    content: attr(data-label);
+    font-size: 0.8em;
+    vertical-align: 0;
+    /*Position text over the progress bar */
+    position: absolute;
+    left: 0;
+    right: 0;
+  }
+
+  meter::-moz-meter-bar {
+    border-radius: 3px;
+  }
+
+  meter:-moz-meter-optimum::-moz-meter-bar {
+    background: #86CC00;
+  }
+
+  meter:-moz-meter-sub-optimum::-moz-meter-bar {
+    background: #FFDB1A;
+  }
+
+  meter:-moz-meter-sub-sub-optimum::-moz-meter-bar {
+    background: #CC4600;
+  }
 }

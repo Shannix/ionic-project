@@ -40,14 +40,27 @@
   <ion-list reorder="true" (ionItemReorder)="reorderItems($event)">
     <ion-item-sliding *ngFor="let item of getItems();">
       <ion-item>
-        <ion-label *ngIf="item.complete==true" class="barre">
-          {{ item.name }}
-          <p>{{ item.desc }}</p>
-        </ion-label>
         <ion-label *ngIf="item.complete==false">
           {{ item.name }}
-          <p>{{ item.desc }}</p>
-          <p><progress class="avancement" value="{{getlimit(item.dateCreate , item.dateExpire)}}" max="100"></progress></p>
+          <p>{{ item.desc }}
+          </p>
+          <ion-grid *ngIf="item.dateExpire">
+            <ion-row>
+              <ion-label *ngIf="item.complete">
+                {{ item.name }}
+                <p>{{ item.desc }}</p>
+              </ion-label>
+            </ion-row>
+            <ion-row>
+              <ion-col col-8>
+                <meter min="0" low="70" optimum="50" high="80" max="100" value="{{getTimeUsed(item)}}">
+                  </meter>
+              </ion-col>
+              <ion-col col-4>
+                {{getTimeUsed(item)}}%
+              </ion-col>
+            </ion-row>
+          </ion-grid>
         </ion-label>
         <ion-checkbox [(ngModel)]="item.complete" (ionChange)="onToggleCompletedItem(item)">
         </ion-checkbox>
