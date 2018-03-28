@@ -59,6 +59,14 @@ export class SublistPage {
     return todoItem;
   }
 
+  getLeftDays(item: TodoItem): number {
+    const dateToday = new Date().getTime();
+    const dateExpire = new Date(item.dateExpire).getTime();
+
+    const leftTime = Math.ceil((dateExpire - dateToday) / 86400000);
+    return leftTime < 0 ? 0 : leftTime;
+  }
+
   getTimeUsed(item: TodoItem): number {
     const dateToday = new Date().getTime();
     const dateCreate = new Date(item.dateCreate).getTime();
@@ -164,6 +172,7 @@ export class SublistPage {
   }
 
   onToggleCompletedItem(item: TodoItem) {
+    item.complete = !item.complete;
     this.service.updateTodoItem(this.todoList, item);
   }
 

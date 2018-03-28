@@ -23,9 +23,6 @@
 </ion-header>
 <ion-content padding>
   <upload-images #upImg [todoList]="getTodoList()">
-    <button (click)="upImg.takePhoto()" ion-button>
-      <i class="fa far fa-image"></i>
-    </button>
     <ion-list>
       <ion-item *ngFor="let image of getTodoList().images">
         <button ion-button float-right (click)="upImg.removePhoto(image)">
@@ -39,48 +36,50 @@
   </upload-images>
   <ion-list reorder="true" (ionItemReorder)="reorderItems($event)">
     <ion-item-sliding *ngFor="let item of getItems();">
-      <ion-item>
-        <ion-label *ngIf="item.complete==false">
-          {{ item.name }}
-          <p>{{ item.desc }}
-          </p>
-          <ion-grid *ngIf="item.dateExpire">
+      <ion-item (click)="editItem(item)">
+        <ion-label>
+          <ion-grid>
             <ion-row>
-              <ion-label *ngIf="item.complete">
+              <ion-label [ngClass]="{ 'barre': item.complete }">
                 {{ item.name }}
                 <p>{{ item.desc }}</p>
               </ion-label>
             </ion-row>
-            <ion-row>
+            <ion-row *ngIf="item.dateExpire && !item.complete">
               <ion-col col-8>
                 <meter min="0" low="70" optimum="50" high="80" max="100" value="{{getTimeUsed(item)}}">
-                  </meter>
+                </meter>
               </ion-col>
               <ion-col col-4>
-                {{getTimeUsed(item)}}%
+                {{getLeftDays(item)}}
+                <ion-icon class="fa fa-clock-o"></ion-icon>
               </ion-col>
             </ion-row>
           </ion-grid>
         </ion-label>
-        <ion-checkbox [(ngModel)]="item.complete" (ionChange)="onToggleCompletedItem(item)">
-        </ion-checkbox>
-        <button (click)="editItem(item)" ion-button clear item-end>
-          <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
-        </button>
       </ion-item>
       <ion-item-options side="right">
         <button ion-button expandable (click)="deleteItem(item)">Delete</button>
+      </ion-item-options>
+      <ion-item-options side="left">
+        <button ion-button expandable (click)="onToggleCompletedItem(item)">{{item.complete ? "uncheck" : "Done"}}</button>
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
 </ion-content>
 <ion-footer>
-  <ion-item class="postit-color">
+  <ion-item class="postit">
     <ion-textarea (change)="setNote($event.target.value)" value="{{getTodoList().note}}" placeholder="Enter a description"></ion-textarea>
   </ion-item>
   <ion-fab bottom right>
-    <button ion-fab (click)="addItem()">
-      <ion-icon name="add"></ion-icon>
-    </button>
+    <button ion-fab mini><ion-icon name="add"></ion-icon></button>
+    <ion-fab-list side="top">
+      <button ion-fab (click)="addItem()"><ion-icon name="add"></ion-icon></button>
+      <button ion-fab>
+        <upload-images #upImg [todoList]="getTodoList()">
+          <ion-icon (click)="upImg.takePhoto()" name="image"></ion-icon>
+        </upload-images>
+      </button>
+    </ion-fab-list>
   </ion-fab>
 </ion-footer>
