@@ -1,5 +1,6 @@
 <ion-content>
   <ion-list reorder="true" (ionItemReorder)="reorderTodosList($event)">
+
     <ion-item-sliding *ngFor="let todo of getTodosList()">
       <ion-item class="form" (click)="displayItemsMonitoring(todo)" [ngClass]="
         { 'green': todoIsCompleted(todo),
@@ -28,13 +29,36 @@
       </ion-item-options>
       <ion-item-options side="right">
         <button ion-button expandable (click)="displayShareManager(todo)">
+          <ion-icon center class="fa fa-share-alt"></ion-icon>
           Share
         </button>
         <button ion-button expandable (click)="deleteTodoList(todo)">
+          <ion-icon center class="fa fa-trash"></ion-icon>
           Delete
         </button>
       </ion-item-options>
+      <ion-row>
+        <ion-col>
+          <button ion-button icon-left clear small>
+          <ion-icon name="thumbs-up"></ion-icon>
+          <div>12 Likes</div>
+        </button>
+        </ion-col>
+        <ion-col>
+          <button ion-button icon-left clear small>
+          <ion-icon name="text"></ion-icon>
+          <div>4 Comments</div>
+        </button>
+        </ion-col>
+        <ion-col center text-center>
+          <ion-note>
+            11h ago
+          </ion-note>
+        </ion-col>
+      </ion-row>
+
     </ion-item-sliding>
+
   </ion-list>
 </ion-content>
 

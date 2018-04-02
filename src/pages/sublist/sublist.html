@@ -4,7 +4,7 @@
       <ion-row>
         <ion-col col-3>
           <button ion-button item-start (click)="goBack()">
-            <i class="fa fa-chevron-left" aria-hidden="true">Back</i>
+              <ion-icon center class="fa fa-undo"></ion-icon>
           </button>
         </ion-col>
         <ion-col col-6>
@@ -22,50 +22,58 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-  <upload-images #upImg [todoList]="getTodoList()">
-    <ion-list>
-      <ion-item *ngFor="let image of getTodoList().images">
-        <button ion-button float-right (click)="upImg.removePhoto(image)">
-          <ion-icon  name="md-close-circle"></ion-icon>
-        </button>
-        <ion-thumbnail>
-          <img [src]="image.urlLocation">
-        </ion-thumbnail>
-      </ion-item>
-    </ion-list>
+  <upload-images *ngIf="getTodoList().images" #upImg [todoList]="getTodoList()">
+    <ion-slides class="margin-space1">
+      <ion-slide *ngFor="let image of getTodoList().images">
+        <ion-row>
+          <ion-col col-9>
+            <ion-thumbnail class="thumb">
+              <img [src]="image.urlLocation">
+            </ion-thumbnail>
+          </ion-col>
+          <ion-col col-3>
+            <button ion-button float-right (click)="upImg.removePhoto(image)">
+      <ion-icon  name="md-close-circle"></ion-icon>
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-slide>
+    </ion-slides>
   </upload-images>
-  <ion-list reorder="true" (ionItemReorder)="reorderItems($event)">
+
+  <ion-list reorder="true" (ionItemReorder)="reorderItems($event)" class="margin-space2">
     <ion-item-sliding *ngFor="let item of getItems();">
       <ion-item (click)="editItem(item)">
         <ion-label>
-          <ion-grid>
-            <ion-row>
-              <ion-label [ngClass]="{ 'barre': item.complete }">
+          <ion-row>
+            <ion-col col-9>
+              <div [ngClass]="{ 'barre': item.complete }">
                 {{ item.name }}
                 <p>{{ item.desc }}</p>
-              </ion-label>
-            </ion-row>
-            <ion-row *ngIf="item.dateExpire && !item.complete">
-              <ion-col col-8>
-                <meter min="0" low="70" optimum="50" high="80" max="100" value="{{getTimeUsed(item)}}">
-                </meter>
-              </ion-col>
-              <ion-col col-4>
-                {{getLeftDays(item)}}
-                <ion-icon class="fa fa-clock-o"></ion-icon>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
+              </div>
+            </ion-col>
+            <ion-col col-3 *ngIf="item.dateExpire && !item.complete">
+              {{getLeftDays(item)}}
+              <ion-icon center class="fa fa-clock-o"></ion-icon>
+              <div> <meter min="0" low="70" optimum="50" high="80" max="100" value="{{getTimeUsed(item)}}">
+                  </meter>
+              </div>
+            </ion-col>
+          </ion-row>
         </ion-label>
       </ion-item>
       <ion-item-options side="right">
-        <button ion-button expandable (click)="deleteItem(item)">Delete</button>
+        <button ion-button expandable (click)="deleteItem(item)"><ion-icon center class="fa fa-trash"></ion-icon>Delete</button>
       </ion-item-options>
       <ion-item-options side="left">
-        <button ion-button expandable (click)="onToggleCompletedItem(item)">{{item.complete ? "uncheck" : "Done"}}</button>
+
+        <button ion-button expandable (click)="onToggleCompletedItem(item)"><ion-icon center class="fa fa-check-square-o"></ion-icon> {{item.complete ? "uncheck" : "Done"}}</button>
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
+
+
+
 </ion-content>
 <ion-footer>
   <ion-item class="postit">

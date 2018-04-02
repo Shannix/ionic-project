@@ -24,6 +24,7 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 import { TodoServiceProvider } from '../providers/todo-service/todo-service';
+import { LocalNotifications } from '@ionic-native/local-notifications';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { TodoServiceProvider } from '../providers/todo-service/todo-service';
     StatusBar,
     SplashScreen,
     TodoServiceProvider,
+    LocalNotifications,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })

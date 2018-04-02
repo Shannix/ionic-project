@@ -8,7 +8,10 @@
   <ion-content>
     <ion-list>
       <div *ngIf="AuthFire.authState | async as authUser; ">
-        <img [src]="authUser.photoURL">
+        <ion-avatar item-start>
+          <img [src]="authUser.photoURL">
+        </ion-avatar>
+
         <h1>  {{ authUser.displayName }}  </h1>
         <button ion-button full (click)="logout()">Logout</button>
       </div>
