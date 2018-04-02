@@ -22,26 +22,27 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-  <upload-images *ngIf="getTodoList().images" #upImg [todoList]="getTodoList()">
-    <ion-slides class="margin-space1">
-      <ion-slide *ngFor="let image of getTodoList().images">
-        <ion-row>
-          <ion-col col-9>
-            <ion-thumbnail class="thumb">
-              <img [src]="image.urlLocation">
-            </ion-thumbnail>
-          </ion-col>
-          <ion-col col-3>
-            <button ion-button float-right (click)="upImg.removePhoto(image)">
+  <div *ngIf="getTodoList().images">
+    <upload-images #upImg [todoList]="getTodoList()">
+      <ion-slides>
+        <ion-slide *ngFor="let image of getTodoList().images">
+          <ion-row>
+            <ion-col col-9>
+              <ion-thumbnail class="thumb">
+                <img [src]="image.urlLocation">
+              </ion-thumbnail>
+            </ion-col>
+            <ion-col col-3>
+              <button ion-button float-right (click)="upImg.removePhoto(image)">
       <ion-icon  name="md-close-circle"></ion-icon>
             </button>
-          </ion-col>
-        </ion-row>
-      </ion-slide>
-    </ion-slides>
-  </upload-images>
-
-  <ion-list reorder="true" (ionItemReorder)="reorderItems($event)" class="margin-space2">
+            </ion-col>
+          </ion-row>
+        </ion-slide>
+      </ion-slides>
+    </upload-images>
+  </div>
+  <ion-list reorder="true" (ionItemReorder)="reorderItems($event)">
     <ion-item-sliding *ngFor="let item of getItems();">
       <ion-item (click)="editItem(item)">
         <ion-label>
