@@ -3,7 +3,8 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service'
-import { ToastController } from 'ionic-angular';
+import { ToastController, Platform } from 'ionic-angular';
+import { GooglePlus } from '@ionic-native/google-plus';
 import * as firebase from 'firebase/app';
 
 @IonicPage()
@@ -20,7 +21,9 @@ export class AuthPage {
     public afAuth: AngularFireAuth,
     public navCtrl: NavController,
     public navParams: NavParams,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private googlePlus: GooglePlus,
+    public plt: Platform
   ) {
     afAuth.authState.subscribe(user => {
       if (!user) {
@@ -29,11 +32,26 @@ export class AuthPage {
       }
 
       this.displayName = user.displayName;
-      console.log(this.displayName);
     });
   }
 
-  googleLogin() {
+  googlePluslogin() {
+    this.googlePlus.login({
+      'webClientId': '741641947952-5buo9i5j3ed1p6clisa3peo5tp8to4j3.apps.googleusercontent.com',
+      'offline': true,
+    })
+      .then(res => {
+        const credential = firebase.auth.GoogleAuthProvider.credential(res.idToken);
+        this.afAuth.auth.signInWithCredential(credential).then(() => {
+          this.authService.login();
+          this.navCtrl.setRoot(HomePage);
+        });
+      }).catch(() => {
+        this.failToConnectMessage();
+      });
+  }
+
+  google() {
     const provider = new firebase.auth.GoogleAuthProvider();
     return this.afAuth.auth.signInWithPopup(provider)
       .then(() => {
@@ -42,6 +60,14 @@ export class AuthPage {
       }).catch(() => {
         this.failToConnectMessage();
       });
+  }
+
+  googleLogin() {
+    if (this.plt.is('ios') || this.plt.is('android')) {
+      this.googlePluslogin();
+    } else {
+      this.google();
+    }
   }
 
   async userLogin(email, password) {

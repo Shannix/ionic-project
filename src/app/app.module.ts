@@ -17,6 +17,7 @@ import { ComponentsModule } from '../components/components.module';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Camera } from '@ionic-native/camera';
+import { GooglePlus } from '@ionic-native/google-plus';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
@@ -50,6 +51,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
   providers: [
     AuthServiceProvider,
     Camera,
+    GooglePlus,
     StatusBar,
     SplashScreen,
     TodoServiceProvider,
