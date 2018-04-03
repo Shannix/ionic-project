@@ -6,6 +6,7 @@ import { AuthServiceProvider } from '../providers/auth-service/auth-service'
 import { HomePage } from '../pages/home/home';
 import { AuthPage } from '../pages/auth/auth';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { GooglePlus } from '@ionic-native/google-plus';
 
 @Component({
   templateUrl: 'app.html'
@@ -22,7 +23,9 @@ export class MyApp {
     public AuthFire: AngularFireAuth,
     public platform: Platform,
     public statusBar: StatusBar,
-    public splashScreen: SplashScreen) {
+    public splashScreen: SplashScreen,
+    private googlePlus: GooglePlus
+  ) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -46,9 +49,30 @@ export class MyApp {
     this.nav.setRoot(page.component);
   }
 
-  logout() {
+
+  googlePluslogout() {
+    this.googlePlus.logout()
+      .then(res => {
+        this.AuthFire.auth.signOut();
+        this.nav.setRoot(AuthPage);
+      })
+      .catch(err => {
+        this.AuthFire.auth.signOut();
+        this.nav.setRoot(AuthPage);
+      });
+  }
+
+  googleLogout() {
     this.authService.logout();
     this.AuthFire.auth.signOut();
     this.nav.setRoot(AuthPage);
+  }
+
+  logout() {
+    if (this.platform.is('ios') || this.platform.is('android')) {
+      this.googlePluslogout();
+    } else {
+      this.googleLogout();
+    }
   }
 }
