@@ -81,7 +81,7 @@ export class SublistPage {
     if (givenTime <= 0 || leftTime <= 0) {
       return 100;
     } else {
-      return (timeUsed / givenTime) * 100 << 0;
+      return (timeUsed / givenTime) * 100;
     }
   }
 
@@ -107,7 +107,7 @@ export class SublistPage {
 
   editItem(item: TodoItem) {
     let todoModal = this.modalCtrl.create(
-      EditItemPage, { item: item , todo: this.todoList}
+      EditItemPage, { item: item, todo: this.todoList }
     );
     todoModal.onDidDismiss(data => {
       console.log(data);
