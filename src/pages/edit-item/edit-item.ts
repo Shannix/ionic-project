@@ -3,12 +3,6 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { TodoServiceProvider } from '../../providers/todo-service/todo-service';
 import { TodoItem, TodoList } from '../../models/model';
 
-/**
- * Generated class for the EditItemPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -29,8 +23,11 @@ export class EditItemPage {
   ngOnInit() {
     const getitem = this.navParams.get('item');
     this.item = getitem;
-    console.log(this.item);
+    this.name= this.item.name;
+    this.desc= this.item.desc;
+    this.expire= this.item.dateExpire;
   }
+
 
   goBack() {
     this.navCtrl.pop();
@@ -41,9 +38,9 @@ export class EditItemPage {
   }
 
   editItem(item: TodoItem) {
-    //  item.name = data.name;
-    //  item.desc = data.desc;
-    //  item.dateExpire = data.expire;
+      item.name = this.name;
+      item.desc = this.desc;
+      item.dateExpire = this.expire;
     //  this.service.updateTodoItem(this.todoList, item);
     this.navCtrl.pop();
   }

@@ -105,14 +105,14 @@ export class SublistPage {
     todoModal.present();
   }
 
-  editItem(TodoItem: TodoItem) {
+  editItem(item: TodoItem) {
     let todoModal = this.modalCtrl.create(
-      EditItemPage, { TodoItem: TodoItem }
+      EditItemPage, { item: item }
     );
     todoModal.onDidDismiss(data => {
       console.log(data);
     });
-
+   
     todoModal.present();
 
   }
