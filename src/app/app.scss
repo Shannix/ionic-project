@@ -14,3 +14,10 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+.avatar{
+  width:100% !important;
+  height : 100% !important;
+  max-width: 200px !important;
+  max-height: 200px !important;
+}

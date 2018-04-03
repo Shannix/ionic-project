@@ -10,6 +10,7 @@ import { TodoItem, TodoList } from '../../models/model';
   templateUrl: 'edit-item.html',
 })
 export class EditItemPage {
+  public todoList: TodoList;
   public item: TodoItem;
   public name;
   public desc;
@@ -22,12 +23,13 @@ export class EditItemPage {
 
   ngOnInit() {
     const getitem = this.navParams.get('item');
+    const gettodo = this.navParams.get('todo');
     this.item = getitem;
+    this.todoList = gettodo;
     this.name= this.item.name;
     this.desc= this.item.desc;
     this.expire= this.item.dateExpire;
   }
-
 
   goBack() {
     this.navCtrl.pop();
@@ -37,12 +39,12 @@ export class EditItemPage {
     return this.item;
   }
 
-  editItem(item: TodoItem) {
-      item.name = this.name;
-      item.desc = this.desc;
-      item.dateExpire = this.expire;
-    //  this.service.updateTodoItem(this.todoList, item);
-    this.navCtrl.pop();
+  editItem() {
+      this.item.name = this.name;
+      this.item.desc = this.desc;
+      this.item.dateExpire = this.expire;
+      this.service.updateTodoItem(this.todoList, this.item);
+      this.navCtrl.pop();
   }
 
 

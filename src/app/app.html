@@ -1,19 +1,21 @@
 <ion-menu [content]="content">
   <ion-header>
     <ion-toolbar>
-      <ion-title>Menu</ion-title>
+      <ion-title></ion-title>
     </ion-toolbar>
   </ion-header>
-
   <ion-content>
     <ion-list>
       <div *ngIf="AuthFire.authState | async as authUser; ">
-        <ion-avatar item-start>
-          <img [src]="authUser.photoURL">
+          <ion-item >
+        <ion-avatar text-center >
+          <img class="avatar" [src]="authUser.photoURL">
         </ion-avatar>
-
-        <h1>  {{ authUser.displayName }}  </h1>
-        <button ion-button full (click)="logout()">Logout</button>
+          </ion-item >
+        <h1 text-center >  {{ authUser.displayName }}  </h1>
+        <button ion-button full (click)="logout()">
+          <ion-icon center class="fa fa-sign-out"></ion-icon>
+          Logout</button>
       </div>
     </ion-list>
   </ion-content>
