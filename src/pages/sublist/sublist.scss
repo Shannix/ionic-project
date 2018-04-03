@@ -1,4 +1,9 @@
 page-sublist {
+.limit{
+  width: 100px; 
+  overflow: hidden;
+}
+
   .barre {
     text-decoration: line-through;
     color: #888888;

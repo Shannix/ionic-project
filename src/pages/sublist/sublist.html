@@ -47,13 +47,13 @@
       <ion-item (click)="editItem(item)">
         <ion-label>
           <ion-row>
-            <ion-col col-9>
-              <div [ngClass]="{ 'barre': item.complete }">
+            <ion-col lg-9 >
+              <div  [ngClass]="{ 'barre': item.complete }">
                 {{ item.name }}
-                <p>{{ item.desc }}</p>
+                <p class="limit" > {{ item.desc }}</p>
               </div>
             </ion-col>
-            <ion-col col-3 *ngIf="item.dateExpire && !item.complete">
+            <ion-col lg-3 *ngIf="item.dateExpire && !item.complete">
               {{getLeftDays(item)}}
               <ion-icon center class="fa fa-clock-o"></ion-icon>
               <div> <meter min="0" low="70" optimum="50" high="80" max="100" value="{{getTimeUsed(item)}}">
