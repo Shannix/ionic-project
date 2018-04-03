@@ -1,12 +1,14 @@
 import {
   ModalController,
   AlertController,
-  ToastController
+  ToastController,
+  IonicPage, NavController, NavParams
 } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { TodoServiceProvider } from '../../providers/todo-service/todo-service';
 import { TodoList } from '../../models/model';
 import { SublistPage } from '../../pages/sublist/sublist';
+import { NewTodoPage } from '../../pages/new-todo/new-todo';
 import { AngularFireAuth } from 'angularfire2/auth';
 
 @Component({
@@ -24,7 +26,8 @@ export class TodoComponent {
     public alertCtrl: AlertController,
     public service: TodoServiceProvider,
     public authFire: AngularFireAuth,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    public navCtrl: NavController
   ) {
   }
 
@@ -90,31 +93,7 @@ export class TodoComponent {
   }
 
   addTodo() {
-    let prompt = this.alertCtrl.create({
-      title: 'Create a new todo',
-      message: "Enter a name for this new todo",
-      inputs: [
-        {
-          name: 'name',
-          placeholder: 'Your todo name'
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          handler: data => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Save',
-          handler: data => {
-            this.service.addTodoList(this.newTodoList(data.name));
-          }
-        }
-      ]
-    });
-    prompt.present();
+    this.navCtrl.push(NewTodoPage);
   }
 
   getColor(todo) {
