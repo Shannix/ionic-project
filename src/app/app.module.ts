@@ -11,7 +11,7 @@ import { HomePageModule } from '../pages/home/home.module';
 import { AuthPageModule } from '../pages/auth/auth.module';
 import { SublistPageModule } from '../pages/sublist/sublist.module';
 import { ManageUsersPageModule } from '../pages/manage-users/manage-users.module';
-
+import { NewItemPageModule } from '../pages/new-item/new-item.module';
 import { ComponentsModule } from '../components/components.module';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -40,6 +40,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
     AuthPageModule,
     SublistPageModule,
     ManageUsersPageModule,
+    NewItemPageModule,
     HttpClientModule,
     IonicModule.forRoot(MyApp),
   ],

@@ -11,6 +11,7 @@ import { TodoItem, TodoList } from '../../models/model'
 import { Component } from '@angular/core';
 import { TodoServiceProvider } from '../../providers/todo-service/todo-service';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { NewItemPage } from '../../pages/new-item/new-item';
 
 @IonicPage()
 @Component({
@@ -19,7 +20,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 })
 
 export class SublistPage {
-  private todoList: TodoList;
+  public todoList: TodoList;
 
   constructor(
     public service: TodoServiceProvider,
@@ -92,42 +93,15 @@ export class SublistPage {
     profileModal.present();
   }
 
-  addItem() {
-    let prompt = this.alertCtrl.create({
-      title: 'Create item',
-      inputs: [
-        {
-          name: 'name',
-          type: 'text',
-          placeholder: "Item name",
-        },
-        {
-          name: 'desc',
-          type: 'text',
-          placeholder: 'Write your description'
-        },
-        {
-          name: 'expire',
-          type: 'date'
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          handler: data => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Save',
-          handler: data => {
-            this.service.addItem(this.todoList, this.newItem(data.name, data.desc, data.expire));
-          }
-        }
-      ]
+  addItem(todoList: TodoList) {
+    let todoModal = this.modalCtrl.create(
+      NewItemPage, { todoList: todoList }
+    );
+    todoModal.onDidDismiss(data => {
+      console.log(data);
     });
 
-    prompt.present();
+    todoModal.present();
   }
 
   editItem(item: TodoItem) {

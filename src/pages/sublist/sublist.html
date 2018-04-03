@@ -83,7 +83,7 @@
   <ion-fab bottom right>
     <button ion-fab mini><ion-icon name="add"></ion-icon></button>
     <ion-fab-list side="top">
-      <button ion-fab (click)="addItem()"><ion-icon name="add"></ion-icon></button>
+      <button ion-fab (click)="addItem(getTodoList())"><ion-icon name="add"></ion-icon></button>
       <button ion-fab>
         <upload-images #upImg [todoList]="getTodoList()">
           <ion-icon (click)="upImg.takePhoto()" name="image"></ion-icon>
