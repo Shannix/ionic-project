@@ -31,8 +31,6 @@ export class NewTodoPage {
   }
 
   newTodoList(name: string): TodoList {
-
-
     const todo: TodoList = {
       uuid: null,
       name: name,

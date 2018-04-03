@@ -2,7 +2,7 @@ import {
   ModalController,
   AlertController,
   ToastController,
-  IonicPage, NavController, NavParams
+  NavController, NavParams
 } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { TodoServiceProvider } from '../../providers/todo-service/todo-service';

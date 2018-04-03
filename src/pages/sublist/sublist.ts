@@ -12,6 +12,7 @@ import { Component } from '@angular/core';
 import { TodoServiceProvider } from '../../providers/todo-service/todo-service';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { NewItemPage } from '../../pages/new-item/new-item';
+import { EditItemPage } from '../../pages/edit-item/edit-item';
 
 @IonicPage()
 @Component({
@@ -104,45 +105,16 @@ export class SublistPage {
     todoModal.present();
   }
 
-  editItem(item: TodoItem) {
-    let prompt = this.alertCtrl.create({
-      title: 'Update item',
-      inputs: [
-        {
-          name: 'name',
-          value: item.name,
-        },
-        {
-          name: 'desc',
-          value: item.desc,
-          placeholder: 'Write your description'
-        },
-        {
-          name: 'expire',
-          value: item.dateExpire,
-          type: 'date'
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          handler: data => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Save',
-          handler: data => {
-            item.name = data.name;
-            item.desc = data.desc;
-            item.dateExpire = data.expire;
-            this.service.updateTodoItem(this.todoList, item);
-          }
-        }
-      ]
+  editItem(TodoItem: TodoItem) {
+    let todoModal = this.modalCtrl.create(
+      EditItemPage, { TodoItem: TodoItem }
+    );
+    todoModal.onDidDismiss(data => {
+      console.log(data);
     });
 
-    prompt.present();
+    todoModal.present();
+
   }
 
   onToggleCompletedItem(item: TodoItem) {
