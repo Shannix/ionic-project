@@ -1,8 +1,8 @@
 page-sublist {
-.limit{
-  width: 100px; 
-  overflow: hidden;
-}
+  .limit {
+    width: 100px;
+    overflow: hidden;
+  }
 
   .barre {
     text-decoration: line-through;
@@ -13,16 +13,19 @@ page-sublist {
     text-align: center;
   }
 
-.thumb{
-  width: 80px;
-  heigth: 50px;
-}
-.margin-space1{
-  margin-top: -14%;
-}
-.margin-space2{
-  margin-top: -12%;
-}
+  .thumb {
+    width: 80px;
+    heigth: 50px;
+  }
+
+  .margin-space1 {
+    margin-top: -14%;
+  }
+
+  .margin-space2 {
+    margin-top: -12%;
+  }
+
   meter {
     /* For Firefox */
     height: 8px;
