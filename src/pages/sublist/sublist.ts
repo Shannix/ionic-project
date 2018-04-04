@@ -30,7 +30,7 @@ export class SublistPage {
     public navCtrl: NavController,
     public popoverCtrl: PopoverController,
     public authFire: AngularFireAuth,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
   ) { }
 
   ngOnInit() {
@@ -42,7 +42,12 @@ export class SublistPage {
   subscribeToList(todoList: TodoList) {
     this.authFire.authState.subscribe(data => {
       this.service.getTodosList(data.email).subscribe(list => {
-        this.todoList = list.find(todo => todo.uuid === this.todoList.uuid);
+        this.todoList = list.find(todo => {
+          if (this.todoList) {
+            return todo.uuid === this.todoList.uuid;
+          }
+          return false;
+        });
       });
     });
   }
@@ -74,8 +79,8 @@ export class SublistPage {
     const dateCreate = new Date(item.dateCreate).getTime();
     const dateExpire = new Date(item.dateExpire).getTime();
 
-    const givenTime = Math.ceil((dateExpire - dateCreate) / 86400000);
-    const leftTime = Math.ceil((dateExpire - dateToday) / 86400000);
+    const givenTime = Math.round((dateExpire - dateCreate) / 86400) / 1000;
+    const leftTime = Math.round((dateExpire - dateToday) / 86400) / 1000;
     const timeUsed = givenTime - leftTime;
 
     if (givenTime <= 0 || leftTime <= 0) {
