@@ -37,7 +37,7 @@
       <ion-label color="primary" stacked>
         Expiration date
       </ion-label>
-      <ion-input type="date" [(ngModel)]="expire"></ion-input>
+      <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="expire"></ion-datetime>
     </ion-item>
   </ion-list>
   <button full ion-button color="secondary" (click)="addItem()" class="pull-right">
