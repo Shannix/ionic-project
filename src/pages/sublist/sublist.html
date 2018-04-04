@@ -34,7 +34,7 @@
             </ion-col>
             <ion-col col-3>
               <button ion-button float-right (click)="upImg.removePhoto(image)">
-      <ion-icon  name="md-close-circle"></ion-icon>
+                <ion-icon  name="md-close-circle"></ion-icon>
             </button>
             </ion-col>
           </ion-row>
@@ -47,10 +47,10 @@
       <ion-item (click)="editItem(item)">
         <ion-label>
           <ion-row>
-            <ion-col lg-9 >
-              <div  [ngClass]="{ 'barre': item.complete }">
+            <ion-col lg-9>
+              <div [ngClass]="{ 'barre': item.complete }">
                 {{ item.name }}
-                <p class="limit" > {{ item.desc }}</p>
+                <p class="limit"> {{ item.desc }}</p>
               </div>
             </ion-col>
             <ion-col lg-3 *ngIf="item.dateExpire && !item.complete">

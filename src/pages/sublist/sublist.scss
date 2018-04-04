@@ -1,7 +1,11 @@
 page-sublist {
   .limit {
+<<<<<<< HEAD
     width: 100px;
     overflow: hidden;
+=======
+    white-space: normal;
+>>>>>>> 3357a882e1a9515c7e846c7d6c6781dada9f7cbb
   }
 
   .barre {
@@ -18,6 +22,7 @@ page-sublist {
     heigth: 50px;
   }
 
+<<<<<<< HEAD
   .margin-space1 {
     margin-top: -14%;
   }
@@ -26,6 +31,8 @@ page-sublist {
     margin-top: -12%;
   }
 
+=======
+>>>>>>> 3357a882e1a9515c7e846c7d6c6781dada9f7cbb
   meter {
     /* For Firefox */
     height: 8px;
